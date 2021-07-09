@@ -1,0 +1,113 @@
+#竞技场每日排名结算 (每日23点55分执行)
+55 23 * * * /data/www/default/script/bzel.sh ArenaDailySettle
+#竞技场赛季排名结算 (赛季结算日23点56分执行)
+56 23 * * 0 /data/www/default/script/bzel.sh ArenaSeasonSettle
+#定期删除竞技场挑战记录 (每日0点1分执行)
+01 00 * * * /data/www/default/script/bzel.sh ArenaRecordDelHistory
+#定期删除历史邮件 (每日0点1分执行)
+01 00 * * * /data/www/default/script/bzel.sh EmailDelHistory
+#监测发送全服邮件(每30s执行一次)
+* * * * * /data/www/default/script/bzel.sh EmailDutyScan
+#监测发送设置定时的全服邮件(每30s执行一次)
+* * * * * /data/www/default/script/bzel.sh EmailDutyScanTime
+#定时生成每日任务，每日凌晨2点执行
+00 02 * * * /data/www/default/script/bzel.sh commonCommand resetEverydayTask
+#重置每日深渊模式挑战次数，每日凌晨3点执行
+00 03 * * * /data/www/default/script/bzel.sh commonCommand resetHardBattleCount
+#清除用户每日任务，每日凌晨3点执行
+00 03 * * * /data/www/default/script/bzel.sh commonCommand delHistoryTask
+#NPC提升属性，每日凌晨2点执行
+00 02 * * * /data/www/default/script/bzel.sh npcEvolution
+#统计战力,在属性提升之后，每日凌晨4点执行
+00 04 * * * /data/www/default/script/bzel.sh combatPowerStatistics
+#场景触发队列--通过脚本执行
+* * * * * /data/www/default/script/bzelQueue.sh sceneQueue
+#成就任务队列--通过脚本执行
+* * * * * /data/www/default/script/bzelQueue.sh achievementQueue
+#称号任务队列--通过脚本执行
+* * * * * /data/www/default/script/bzelQueue.sh titleQueue
+#用户食物行为数据同步任务队列--通过脚本执行
+* * * * * /data/www/default/script/bzelQueue.sh foodActionsQueue
+#凌晨4点定时重启任务队列
+00 04 * * * /data/www/default/script/bzel.sh commonCommand reloadQueue
+#凌晨1点定时统计用户数
+01 01 * * * /data/www/default/script/bzel.sh commonCommand userStatistics
+
+
+上线清除数据
+truncate table activity_user_reward_log;
+truncate table ad_log;
+truncate table arena_attacked_log;
+truncate table arena_battle_record;
+truncate table arena_user;
+truncate table cell_box_log;
+truncate table collect_reward_log;
+truncate table exchange_code_log;
+truncate table fly_box_log;
+truncate table friend;
+truncate table friend_box_log;
+truncate table friend_help;
+truncate table hard_user_pass;
+truncate table hard_user_pass_log;
+truncate table hard_user_sweep_log;
+truncate table quest_map_plots_log;
+truncate table quest_random_box;
+truncate table quest_user;
+truncate table quest_user_event_log;
+truncate table quest_user_luck;
+truncate table quest_user_random;
+truncate table quicken_log;
+truncate table share_log;
+truncate table share_visit_log;
+truncate table task_achievement_success_log;
+truncate table task_daily_complete_rate_log;
+truncate table task_daily_complete_record;
+truncate table title_unlock;
+truncate table user;
+truncate table user_api_times;
+truncate table user_certify;
+truncate table user_character;
+truncate table user_character_change_log;
+truncate table user_character_data;
+truncate table user_character_equip;
+truncate table user_character_equip_log;
+truncate table user_character_package;
+truncate table user_character_skill;
+truncate table user_crystal_log;
+truncate table user_diamond_log;
+truncate table user_economy_log;
+truncate table user_elve;
+truncate table user_elve_attr;
+truncate table user_elve_shard;
+truncate table user_elve_shard_log;
+truncate table user_elve_upgrade_log;
+truncate table user_email;
+truncate table user_email_duty;
+truncate table user_email_full_service_log;
+truncate table user_food_log;
+truncate table user_food_log_data;
+truncate table user_forg_log;
+truncate table user_kill_log;
+truncate table user_login_log;
+truncate table user_luckdraw_batch_log;
+truncate table user_luckdraw_prop_log;
+truncate table user_money_log;
+truncate table user_online_log;
+truncate table user_pass_normal;
+truncate table user_pass_normal_log;
+truncate table user_recharge_log;
+truncate table user_sign;
+truncate table user_skill_log;
+truncate table user_soul_log;
+truncate table user_sq;
+truncate table user_sq_attr;
+truncate table user_statistics;
+truncate table user_wing;
+truncate table worker_client_id;
+truncate table user_pass_fail_log;
+truncate table cell_box_log;
+truncate table common_elve_shop_log;
+truncate table user_api_times;
+
+#修改自增值
+alter table user AUTO_INCREMENT=201;
