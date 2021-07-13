@@ -1,33 +1,25 @@
 <?php
 namespace app\controller;
 
-use app\constant\TaskConstant;
-use app\controller\Base;
-use app\exception\AuthException;
 use app\logic\common\UserLogic;
-use app\logic\common\UserCertifyLogic;
-use app\service\QueueService;
-use think\facade\Log;
 
 class AuthController extends Base
 {
-
-    public function initialize(){
-
-        //不需要登录
-        $this->isNeedLogin = false;
-        parent::initialize();
-
-        //检测维护状态
-        UserLogic::getInstance()->checkMaintain($this->request);
-    }
+    public $isNeedLogin = false;
 
     /**
      * 登录
      */
-    public function login()
+    public function vxLogin()
     {
         $res = UserLogic::getInstance()->wxLogin($this->request);
+        return $this->success($res);
+    }
+
+    public function testLogin()
+    {
+        $openId = $this->request->param('openId');
+        $res = UserLogic::getInstance()->testLogin($openId);
         return $this->success($res);
     }
 }
