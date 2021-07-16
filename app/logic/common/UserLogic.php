@@ -3,6 +3,7 @@ namespace app\logic\common;
 use app\constant\Constant;
 use app\exception\LogicException;
 use app\logic\BaseLogic;
+use app\logic\cache\tokenLogic;
 use app\model\user\UserLoginLogModel;
 use app\model\user\UserModel;
 use jwt\JwtAuth;
@@ -67,7 +68,7 @@ class UserLogic extends BaseLogic
         //获取用户信息
         $userInfo = UserModel::getInstance()->getInfo(['openid' => $openId]);
         $token = JwtAuth::encode(['user_id' => $userInfo->user_id]);
-
+        $token = tokenLogic::getInstance()->tokenToCache($token);
         // 获取游戏基本信息
         return [
             'userInfo' => $userInfo,
@@ -96,7 +97,7 @@ class UserLogic extends BaseLogic
         //获取用户信息
         $userInfo = UserModel::getInstance()->getInfo(['openid' => $openId]);
         $token = JwtAuth::encode(['user_id' => $userInfo->user_id]);
-
+        $token = tokenLogic::getInstance()->tokenToCache($token);
         // 获取游戏基本信息
         return [
             'userInfo' => $userInfo,

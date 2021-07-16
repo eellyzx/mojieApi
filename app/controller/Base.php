@@ -8,8 +8,8 @@ use app\exception\LogicException;
 use app\model\user\UserModel;
 use app\service\SignService;
 use jwt\JwtAuth;
-use Redis\Redis;
 use think\exception\HttpResponseException;
+use think\facade\Cache;
 use think\Response;
 
 class Base extends BaseController
@@ -70,17 +70,13 @@ class Base extends BaseController
         //获取用户信息
         if (!empty($this->userId)){
             $key = RedisConstant::$userBaseInfo . $this->userId;
-            $info = Redis::get($key);
+            $info = Cache::get($key);
             if (empty($info)) {
                 $info = UserModel::getInstance()->where(['user_id' => $this->userId])
                     ->field('user_id,channel_id,scene_id,create_time')->findOrEmpty()->toArray();
-                Redis::setex($key, 300, $info);
+                Cache::set($key, $info, 300);
             }
             $this->userInfo = $info;
-        }
-
-        if (Redis::get('user_close_status_'.$this->userId)){
-            throw new LogicException('涉嫌使用外挂，您被封号一小时');
         }
 
         // 签名验证
