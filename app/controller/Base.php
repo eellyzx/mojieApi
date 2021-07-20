@@ -80,7 +80,7 @@ class Base extends BaseController
         }
 
         // 签名验证
-        //SignService::getInstance()->verify($this->request,$this->userId);
+        SignService::getInstance()->verify($this->request,$token);
 
         return true;
     }

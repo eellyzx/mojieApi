@@ -50,35 +50,28 @@ class SignService
      * @return bool
      * @throws SignException
      */
-    public function verify(Request $request, $userId = 0)
+    public function verify(Request $request, $token)
     {
-        $apiSign = $request->header('apiSign');
+        $apiSign = $request->header('sign');
         if (empty($apiSign)){
             //没有传就不校验
             return true;
         }
         $this->postParam = $request->param();
         $this->apiSign   = $apiSign;
-        $this->timestamp = $request->param('timestamp');
+        $this->timestamp = $request->header('timestamp');
+        $this->authorization = $request->header('Authorization','');
         // $this->apiKey    = $request->param('apiKey');
-        if (!empty($userId)){
-            $this->postParam['uid'] = $userId;
-        }
 
         if(empty($this->apiSign)){
             throw new SignException("签名验证失败");
         }elseif(empty($this->timestamp)){
             throw new SignException("签名验证失败");
-        }elseif (abs(time() - $this->timestamp) > 300){
+        }elseif (abs(time() - $this->timestamp) > 10){
             throw new SignException('请求超时');
         }
-
-        $key    = config('system.api')['key'];
-        $secret = config('system.api')['secret'];
-
         //获取所有请求的参数
         $AllParam = $this->postParam;
-        $AllParam['apiKey'] = $key;
         unset($AllParam['module']);
         unset($AllParam['controller']);
         unset($AllParam['action']);
@@ -86,11 +79,11 @@ class SignService
         ksort($AllParam);	//根据键对数组进行升序排序
         $hashData ='';
         foreach($AllParam as $k => $v){
-            $hashData .= '&'.$k.'='. rawurlencode($v);
+            $hashData .= '&'.$k.'='. urldecode($v);
         }
         $hashData = ltrim($hashData,'&');
-
-        $genSign = hash_hmac('md5', $hashData, $secret );
+        $hashData .= '&timestamp='.$this->timestamp.'&token='.$this->authorization;
+        $genSign = md5(urlencode($hashData));
         if($genSign != $this->apiSign){
             throw new SignException('签名验证失败');
         }
