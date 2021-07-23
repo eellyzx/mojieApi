@@ -21,4 +21,13 @@ class tokenLogic extends BaseLogic
         Cache::set($key,$token,3600);
         return $key;
     }
+
+    /**
+     * token转字符串
+     * @param $token
+     */
+    public function tokenToString($token)
+    {
+        return (string)Cache::get($token);
+    }
 }

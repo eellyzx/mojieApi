@@ -79,12 +79,14 @@ class SignService
         ksort($AllParam);	//根据键对数组进行升序排序
         $hashData ='';
         foreach($AllParam as $k => $v){
-            $hashData .= '&'.$k.'='. urldecode($v);
+            $hashData .= $k.'='. urldecode($v).'&';
         }
-        $hashData = ltrim($hashData,'&');
-        $hashData .= '&timestamp='.$this->timestamp.'&token='.$this->authorization;
+        $hashData .= 'timestamp='.$this->timestamp.'&token='.$this->authorization;
+        $hashData = trim($hashData,"&");
         $genSign = md5(urlencode($hashData));
         if($genSign != $this->apiSign){
+            dump(urlencode($hashData));
+            exit();
             throw new SignException('签名验证失败');
         }
         return true;

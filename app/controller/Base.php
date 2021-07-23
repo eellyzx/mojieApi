@@ -5,6 +5,7 @@ use app\BaseController;
 use app\constant\RedisConstant;
 use app\exception\AuthException;
 use app\exception\LogicException;
+use app\logic\cache\tokenLogic;
 use app\model\user\UserModel;
 use app\service\SignService;
 use jwt\JwtAuth;
@@ -54,8 +55,11 @@ class Base extends BaseController
     protected function initialize()
     {
         $token = $this->request->header('Authorization');
+        $authorizationStr = tokenLogic::getInstance()->tokenToString($token);
         try {
-            $authorization = JwtAuth::decode($token);
+            $authorization = JwtAuth::decode($authorizationStr);
+            // dump($authorization);
+            // exit();
             if (empty($authorization->user_id)){
                 $this->userId = 0;
             }else {
@@ -73,7 +77,7 @@ class Base extends BaseController
             $info = Cache::get($key);
             if (empty($info)) {
                 $info = UserModel::getInstance()->where(['user_id' => $this->userId])
-                    ->field('user_id,channel_id,scene_id,create_time')->findOrEmpty()->toArray();
+                    ->field('user_id,create_time')->findOrEmpty()->toArray();
                 Cache::set($key, $info, 300);
             }
             $this->userInfo = $info;

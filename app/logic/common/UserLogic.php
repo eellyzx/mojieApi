@@ -47,11 +47,8 @@ class UserLogic extends BaseLogic
         $wxUserData['sessionKey'] = $wxRs['session_key'] ?? '';
 
         // 创建账号
-        $userInfoField = 'user_id, status, last_login_time';
+        $userInfoField = 'user_id,last_login_time';
         $userInfo = UserModel::getInstance()->getInfo(['openid' => $openId,'server_id' => $serverId],$userInfoField)->toArray();
-        if(!empty($userInfo) && Constant::STATUS_CLOSE == $userInfo['status']){
-            throw new LogicException('账号已被封禁');
-        }
         //已存在用户
         if ($userInfo){
             $userId = $userInfo['user_id'];
