@@ -9,8 +9,9 @@ use app\model\BaseModel;
  * Class UserModel
  * @package app\model\user
  */
-class UserModel extends BaseModel
+class UserGameDataModel extends BaseModel
 {
-    protected $table = 'user';
+    protected $table = 'user_game_data';
     protected $pk    = 'user_id';
+
 }

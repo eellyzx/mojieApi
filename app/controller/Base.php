@@ -73,13 +73,8 @@ class Base extends BaseController
         }
         //获取用户信息
         if (!empty($this->userId)){
-            $key = RedisConstant::$userBaseInfo . $this->userId;
-            $info = Cache::get($key);
-            if (empty($info)) {
-                $info = UserModel::getInstance()->where(['user_id' => $this->userId])
-                    ->field('user_id,create_time')->findOrEmpty()->toArray();
-                Cache::set($key, $info, 300);
-            }
+            $info = UserModel::getInstance()->where(['u.user_id' => $this->userId])->alias('u')->join('user_game_data d','u.user_id = d.user_id')
+                ->field('u.user_id,d.map_id')->findOrEmpty()->toArray();
             $this->userInfo = $info;
         }
 

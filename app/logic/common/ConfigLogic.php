@@ -7,7 +7,7 @@ use app\exception\LogicException;
 use app\logic\BaseLogic;
 use app\model\box\FlyBoxConfigModel;
 use app\model\character\UserCharacterDataModel;
-use app\model\common\CommonBuffModel;
+use app\model\common\MapModel;
 use app\model\common\CommonCharacterAttrModel;
 use app\model\common\CommonCharacterLevelModel;
 use app\model\common\CommonElveAttrModel;
@@ -426,7 +426,7 @@ class ConfigLogic extends BaseLogic
         $key = RedisConstant::$commonBuffConfig;
         $list = Redis::get($key);
         if (empty($list)){
-            $list = CommonBuffModel::getInstance()->field('id,type,alias,desc,decimal_place')->select()->toArray();
+            $list = MapModel::getInstance()->field('id,type,alias,desc,decimal_place')->select()->toArray();
             Redis::setex($key, 30 * 24 * 3600 , $list);
         }
         $list = ArrayHelper::arrayExtractMap($list,$index);
