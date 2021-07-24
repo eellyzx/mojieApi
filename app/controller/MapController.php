@@ -42,8 +42,8 @@ class MapController extends Base
                 ['monster_id' => 4,'monster_name' => '骷髅王','monster_num' => 1,],
             ],
             'sundries' => [
-                ['name' => '小瓶魔力药水 ','id' => 1],
-                ['name' => '三级木材 ','id' => 2]
+                ['name' => '小瓶魔力药水','id' => 1],
+                ['name' => '三级木材','id' => 2]
             ],
             'move' => [
                 'n' => ['name' => $mapList[$mapInfo->n] ?? '','map_id' => $mapInfo->n],
