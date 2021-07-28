@@ -20,12 +20,17 @@ class ComposerStaticInitfbe5ef5494c62958bd4dc0c46d9ce35c
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
+            'think\\worker\\' => 13,
             'think\\trace\\' => 12,
             'think\\' => 6,
         ),
         'a' => 
         array (
             'app\\' => 4,
+        ),
+        'W' => 
+        array (
+            'Workerman\\' => 10,
         ),
         'S' => 
         array (
@@ -52,6 +57,7 @@ class ComposerStaticInitfbe5ef5494c62958bd4dc0c46d9ce35c
         ),
         'G' => 
         array (
+            'GatewayWorker\\' => 14,
             'GatewayClient\\' => 14,
         ),
         'F' => 
@@ -65,6 +71,10 @@ class ComposerStaticInitfbe5ef5494c62958bd4dc0c46d9ce35c
     );
 
     public static $prefixDirsPsr4 = array (
+        'think\\worker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-worker/src',
+        ),
         'think\\trace\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-trace/src',
@@ -79,6 +89,10 @@ class ComposerStaticInitfbe5ef5494c62958bd4dc0c46d9ce35c
         'app\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
+        ),
+        'Workerman\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/workerman/workerman',
         ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
@@ -135,6 +149,10 @@ class ComposerStaticInitfbe5ef5494c62958bd4dc0c46d9ce35c
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
+        ),
+        'GatewayWorker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/workerman/gateway-worker/src',
         ),
         'GatewayClient\\' => 
         array (

@@ -24,12 +24,12 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
+    'pretty_version' => 'dev-main',
+    'version' => 'dev-main',
     'aliases' => 
     array (
     ),
-    'reference' => 'bb08c0d41b0d08f440892be7baf41a13c07d59f2',
+    'reference' => '6d490ca8e2ba58ea416a340313d31c15b3b073ea',
     'name' => 'topthink/think',
   ),
   'versions' => 
@@ -196,12 +196,12 @@ private static $installed = array (
     ),
     'topthink/think' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => 'dev-main',
+      'version' => 'dev-main',
       'aliases' => 
       array (
       ),
-      'reference' => 'bb08c0d41b0d08f440892be7baf41a13c07d59f2',
+      'reference' => '6d490ca8e2ba58ea416a340313d31c15b3b073ea',
     ),
     'topthink/think-helper' => 
     array (
@@ -239,6 +239,24 @@ private static $installed = array (
       ),
       'reference' => '9a9fa8f767b6c66c5a133ad21ca1bc96ad329444',
     ),
+    'topthink/think-worker' => 
+    array (
+      'pretty_version' => 'v3.0.6',
+      'version' => '3.0.6.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '21dc442aaa50594466ed3ed767af0a68b8b75364',
+    ),
+    'workerman/gateway-worker' => 
+    array (
+      'pretty_version' => 'v3.0.20',
+      'version' => '3.0.20.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '75b21653b3eaa99c4d5ae84ce8c5b27cda96d095',
+    ),
     'workerman/gatewayclient' => 
     array (
       'pretty_version' => 'v3.0.13',
@@ -247,6 +265,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '6f4e76f38947be5cabca2c6fee367151f248d949',
+    ),
+    'workerman/workerman' => 
+    array (
+      'pretty_version' => 'v3.5.31',
+      'version' => '3.5.31.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'b73ddc45b3c7299f330923a2bde23ca6e974fd96',
     ),
   ),
 );
