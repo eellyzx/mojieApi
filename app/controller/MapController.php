@@ -1,6 +1,7 @@
 <?php
 namespace app\controller;
 
+use app\logic\monster\MonsterLogic;
 use app\model\common\MapModel;
 use app\model\user\UserGameDataModel;
 
@@ -26,6 +27,8 @@ class MapController extends Base
         $mapList = MapModel::getInstance()->where(['map_id' => $mapIds])->field('map_id,map_name')->select()->toArray();
         $mapList = array_column($mapList,'map_name','map_id');
 
+        //获取怪物
+        $monsterList = MonsterLogic::getInstance()->getMapMonster($mapId);
         return $this->success([
             'task' => (object)[
                 'task_name' => '打开城堡大门',
@@ -35,12 +38,7 @@ class MapController extends Base
                 'map_desc' => $mapInfo->map_desc,
                 'weather'  => '夏末的上午，太阳越升越高'
             ],
-            'monster' => [
-                ['monster_id' => 1,'monster_name' => '木乃伊','monster_num' => 10,],
-                ['monster_id' => 2,'monster_name' => '骷髅','monster_num' => 10,],
-                ['monster_id' => 3,'monster_name' => '骷髅射手','monster_num' => 10,],
-                ['monster_id' => 4,'monster_name' => '骷髅王','monster_num' => 1,],
-            ],
+            'monster' => $monsterList,
             'sundries' => [
                 ['name' => '小瓶魔力药水','id' => 1],
                 ['name' => '三级木材','id' => 2]
