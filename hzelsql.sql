@@ -1,296 +1,899 @@
-CREATE TABLE `arena_battle_record` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `attack_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '进攻用户ID',
-  `defend_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '防守用户ID',
-  `attack_user_rank` int(10) NOT NULL DEFAULT '0' COMMENT '进攻者对战前排名',
-  `defend_user_rank` int(10) NOT NULL COMMENT '防守者对战前排名',
-  `winner` int(11) NOT NULL DEFAULT '0' COMMENT '胜利者ID',
-  `score` int(10) NOT NULL DEFAULT '0' COMMENT '胜利获得积分',
-  `is_finish` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否挑战完成',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='对战记录表';
+/*
+Navicat MySQL Data Transfer
 
-CREATE TABLE `arena_rank_reward` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '1:每日排名奖励  2: 赛季排名奖励',
-  `level` int(10) NOT NULL DEFAULT '0' COMMENT '奖励等级',
-  `min_rank` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最低排名',
-  `max_rank` int(10) NOT NULL DEFAULT '0' COMMENT '最高排名',
-  `reward` varchar(255) NOT NULL DEFAULT '' COMMENT '奖励物品',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='排名奖励配置表';
+Source Server         : 本地虚拟机
+Source Server Version : 50644
+Source Host           : 192.168.8.99:3306
+Source Database       : demon
 
-CREATE TABLE `arena_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `score` int(11) NOT NULL DEFAULT '0' COMMENT '积分',
-  `is_npc` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否NPC',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COMMENT='竞技场用户表';
+Target Server Type    : MYSQL
+Target Server Version : 50644
+File Encoding         : 65001
 
-CREATE TABLE `common_buff` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '属性类型：',
-  `alias` char(5) NOT NULL DEFAULT '0' COMMENT '属性别名4种类型：1.主动状态类 2.常驻类 3.被动状态类 4.收益类',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '属性说明',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COMMENT='buff配置表';
+Date: 2021-08-02 18:30:26
+*/
 
-CREATE TABLE `common_card_pool` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `prop_id` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '道具ID',
-  `quantity` varchar(64) NOT NULL DEFAULT '0' COMMENT '数量',
-  `rate` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '概率',
-  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否参加抽奖',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='抽奖卡池';
+SET FOREIGN_KEY_CHECKS=0;
 
-CREATE TABLE `common_character_attr` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `character_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '角色所属 1:斩魂；2影舞；3猎魔',
-  `level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '等级',
-  `con` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '生命',
-  `atk` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '攻击',
-  `def` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '防御',
-  `agi` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '攻速',
-  `crit` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '暴击',
-  `resi` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '韧性',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1501 DEFAULT CHARSET=utf8mb4 COMMENT='角色等级属性表';
-
-CREATE TABLE `common_character_level` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '等级别名',
-  `level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '等级',
-  `exp` varchar(64) NOT NULL DEFAULT '0' COMMENT '达到该等级所需的经验值',
-  `box` varchar(1024) NOT NULL DEFAULT '' COMMENT '偷宝箱配置：0宝箱获得金币数量，1宝箱获得魂石数量',
-  `skill` varchar(16) NOT NULL DEFAULT '' COMMENT '技能配置：123技能最大等级',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=501 DEFAULT CHARSET=utf8mb4 COMMENT='人物等级';
-
-CREATE TABLE `common_elve` (
-  `elve_id` int(11) NOT NULL COMMENT '主键',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '精灵别名',
-  `name` varchar(16) NOT NULL DEFAULT '0' COMMENT '精灵名称',
-  `quality` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '品质',
-  `init_level` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '初始等级',
-  `init_star` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '初始星级',
-  `baptism_cost` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '洗练消耗费用',
-  `increase` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '下次升段时额外增加的费用数额',
-  `max_level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最大等级',
-  `max_star` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最大星级',
-  `decompose_return` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '分解返还碎片',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`elve_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='精灵配置';
-
-CREATE TABLE `common_elve_attr` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `elve_id` int(10) NOT NULL DEFAULT '0' COMMENT '精灵ID',
-  `attr_id` varchar(8) NOT NULL DEFAULT '' COMMENT '属性KEY',
-  `attr_value` int(10) NOT NULL DEFAULT '0' COMMENT '属性值',
-  `min_rate` int(10) NOT NULL DEFAULT '0' COMMENT '洗练最小增幅',
-  `max_rate` int(10) NOT NULL DEFAULT '0' COMMENT '洗练最大增幅',
-  `growth` int(10) NOT NULL DEFAULT '0' COMMENT '成长性',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COMMENT='精灵属性表';
-
-CREATE TABLE `common_elve_upgrade` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `alias` char(8) NOT NULL DEFAULT '' COMMENT '等级别名',
-  `level` int(10) NOT NULL DEFAULT '0' COMMENT '等级',
-  `quality_1` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'ss升到该等级费用',
-  `quality_2` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 's升到该等级费用',
-  `quality_3` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'a升到该等级费用',
-  `quality_4` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'b升到该等级费用',
-  `quality_5` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'c升到该等级费用',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='精灵升级配置表';
-
-CREATE TABLE `common_food` (
-  `id` int(11) NOT NULL COMMENT '主键',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '别名',
-  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '食物名字',
-  `level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '食物等级',
-  `exp` varchar(64) NOT NULL DEFAULT '0' COMMENT '食用经验值',
-  `cost` varchar(64) NOT NULL DEFAULT '0' COMMENT '食物购买价格(金币)',
-  `increase` varchar(64) NOT NULL DEFAULT '0' COMMENT '递增数值',
-  `condition` varchar(64) NOT NULL DEFAULT '' COMMENT '条件类型,相应数值;2种解锁条件类型1.角色等级，数值为角色等级。2.通关关卡，数值为关卡ID',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='食材表';
-
-CREATE TABLE `common_level` (
-  `level_id` int(10) NOT NULL COMMENT '关卡ID',
-  `alias` varchar(16) NOT NULL DEFAULT '' COMMENT '关卡ID别名',
-  `chapter` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '章节',
-  `level_name` varchar(16) NOT NULL DEFAULT '' COMMENT '关卡名称',
-  `offline_reward` varchar(64) NOT NULL DEFAULT '' COMMENT '离线奖励金币',
-  `normal_kill_reward` varchar(64) NOT NULL DEFAULT '' COMMENT '击杀普通怪物奖励金币',
-  `monster1` varchar(64) NOT NULL DEFAULT '' COMMENT '怪物配置1',
-  `monster2` varchar(64) NOT NULL DEFAULT '' COMMENT '怪物配置2',
-  `monster3` varchar(64) NOT NULL DEFAULT '' COMMENT '怪物配置3',
-  `monster4` varchar(64) NOT NULL DEFAULT '' COMMENT '怪物配置4',
-  `monster5` varchar(64) NOT NULL DEFAULT '' COMMENT '怪物配置5',
-  `boss` varchar(64) NOT NULL DEFAULT '' COMMENT 'boss配置',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`level_id`),
-  UNIQUE KEY `alias` (`alias`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='关卡配置';
-
-CREATE TABLE `common_level_pass_reward` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `level_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关卡ID',
-  `prop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '道具ID；common_prop表主键',
-  `quantity` varchar(64) NOT NULL DEFAULT '0' COMMENT '奖励数量',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COMMENT='普通关卡通关奖励配置';
-
-CREATE TABLE `common_prop` (
-  `prop_id` int(11) NOT NULL COMMENT '主键',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '道具别名',
-  `name` varchar(16) NOT NULL DEFAULT '0' COMMENT '道具名称',
-  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '大类:1.核心货币;2.普通道具;3.特殊道具',
-  `sub_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '小类：1金币;2魂石;3钻石;4洗练石;5技能点;6精灵结晶;7精灵碎片;8;精灵',
-  `quality` tinyint(1) NOT NULL DEFAULT '0' COMMENT '精灵碎片品质：1=SS;2=S;3=A;4=B;5=C',
-  `elve_id` tinyint(10) NOT NULL DEFAULT '0' COMMENT '精灵ID',
-  `merge_need_quality` int(10) NOT NULL DEFAULT '0' COMMENT '合成精灵所需碎片数量',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`prop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='道具表';
-
-CREATE TABLE `common_skill` (
-  `skill_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `character_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '角色类型',
-  `skill_num` varchar(20) NOT NULL COMMENT '技能标识（用来标志技能1,2,3）',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '技能ID',
-  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '技能名称',
-  `level` int(10) NOT NULL DEFAULT '0' COMMENT '技能等级',
-  `upgrade` varchar(64) NOT NULL DEFAULT '' COMMENT '升级费用(技能点)',
-  `condition` int(10) NOT NULL DEFAULT '0' COMMENT '解锁条件（角色等级）',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`skill_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8mb4 COMMENT='技能配置表';
-
-CREATE TABLE `common_sq` (
-  `sq_id` int(11) NOT NULL COMMENT '主键',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '神器别名',
-  `name` varchar(16) NOT NULL DEFAULT '0' COMMENT '神器名称',
-  `init_level` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '初始等级',
-  `baptism_cost` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '洗练消耗费用',
-  `condition` varchar(255) NOT NULL DEFAULT '' COMMENT '解锁条件',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`sq_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='神器配置';
-
-CREATE TABLE `common_sq_attr` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `sq_id` int(10) NOT NULL DEFAULT '0' COMMENT '神器ID',
-  `attr_id` varchar(8) NOT NULL DEFAULT '' COMMENT '属性KEY',
-  `attr_value` int(10) NOT NULL DEFAULT '0' COMMENT '属性值',
-  `min_rate` int(10) NOT NULL DEFAULT '0' COMMENT '洗练最小增幅',
-  `max_rate` int(10) NOT NULL DEFAULT '0' COMMENT '洗练最大增幅',
-  `growth` int(10) NOT NULL DEFAULT '0' COMMENT '成长性',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='神器属性表';
-
-CREATE TABLE `common_sq_level` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `level` int(10) NOT NULL DEFAULT '0' COMMENT '等级',
-  `cost` int(10) NOT NULL DEFAULT '0' COMMENT '升级费用',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='神器等级配置表';
-
-CREATE TABLE `common_wing` (
-  `wing_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '翅膀ID',
-  `name` varchar(16) NOT NULL DEFAULT '' COMMENT '翅膀名称',
-  `quality` int(10) NOT NULL COMMENT '品质',
-  `cost_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '费用类型：1钻石；2观看广告',
-  `cost` varchar(64) NOT NULL DEFAULT '0' COMMENT '费用',
-  `condition_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '解锁条件类型:1.角色等级;2.通关关卡',
-  `condition` int(10) NOT NULL DEFAULT '0' COMMENT '等级或者关卡值',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`wing_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='翅膀配置表';
-
-CREATE TABLE `common_zb` (
-  `zb_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `character_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '角色类型',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '道具别名',
-  `name` varchar(16) NOT NULL DEFAULT '' COMMENT '道具名称',
-  `level` int(10) NOT NULL DEFAULT '0' COMMENT '等级',
-  `break` varchar(64) NOT NULL DEFAULT '0' COMMENT '升级费用',
-  `increase` varchar(64) NOT NULL DEFAULT '0' COMMENT '升段费用增长',
-  `condition` varchar(64) NOT NULL DEFAULT '0' COMMENT '解锁条件:角色等级',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`zb_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='装备配置表';
-
-CREATE TABLE `eve_count` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `register_num` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总注册人数',
-  `active_total` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总活跃人数',
+-- ----------------------------
+-- Table structure for asset
+-- ----------------------------
+DROP TABLE IF EXISTS `asset`;
+CREATE TABLE `asset` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
+  `file_size` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '文件大小,单位B',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上传时间',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态;1:可用,0:不可用',
+  `download_times` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '下载次数',
+  `file_key` varchar(64) NOT NULL DEFAULT '' COMMENT '文件惟一码',
+  `filename` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件名',
+  `file_path` varchar(100) NOT NULL DEFAULT '' COMMENT '文件路径,相对于upload目录,可以为url',
+  `file_md5` varchar(32) NOT NULL DEFAULT '' COMMENT '文件md5值',
+  `file_sha1` varchar(40) NOT NULL DEFAULT '',
+  `suffix` varchar(10) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
+  `more` text CHARACTER SET utf8mb4 COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `date` (`date`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='每日总数统计';
+  KEY `file_key` (`file_key`,`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='资源表';
 
-CREATE TABLE `friend` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  `friend_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '好友id',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `delete_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='好友关系表';
+-- ----------------------------
+-- Records of asset
+-- ----------------------------
+INSERT INTO `asset` VALUES ('36', '1', '18429', '1619078986', '1', '0', '27a178f1da5a8338510ab8a969b4c9821e0f4aea238c6a17236cc9f7625dad9d', '微信图片_20210422160821.png', 'share/20210422/aaef83057ec561dfb0fc4821874bff2a.png', '27a178f1da5a8338510ab8a969b4c982', '555099859567be2dc5cc6ce5f092ce260f6c4246', 'png', null);
+INSERT INTO `asset` VALUES ('37', '1', '20031', '1619084152', '1', '0', 'e67c85dc1556a7a815133320debd0ab8eb40db084ba3c930fd09f3d78ada1400', '微信图片_20210206091551.jpg', 'share/20210422/f1964cd6f465617c078b406aa3029fcb.jpg', 'e67c85dc1556a7a815133320debd0ab8', '0dcf463de4d06e63776e241e75d6a86f028d0bfd', 'jpg', null);
+INSERT INTO `asset` VALUES ('38', '1', '47194', '1619142825', '1', '0', '768616a2db2e8f757c92656cd569ad488a79de6723f35ad6a1ce083662d405d6', 'img_banner.png', 'share/20210423/e1d851215110db5b8e80ce3b6a2e4064.png', '768616a2db2e8f757c92656cd569ad48', '84dc7c0f82006518e6d5e89692c9ace26dd63c0b', 'png', null);
+INSERT INTO `asset` VALUES ('39', '1', '35438', '1622183826', '1', '0', 'e3a840015ca51dfe055f84c89f0441f4c39fd774a6949b67b560942a80281c6d', 'u=1689597634,1879193385&fm=26&gp=0.jpg', 'share/20210528/3a0d1f70d03664433b8e2086d444e0a9.jpg', 'e3a840015ca51dfe055f84c89f0441f4', '3f70e64c221584684e76a21103929048bca0ee72', 'jpg', null);
+INSERT INTO `asset` VALUES ('40', '1', '33529', '1622183882', '1', '0', '23c2b62ad66bae3157965de8a79f4273257627d687b0674e9e451172425c158d', 'u=167831151,606914002&fm=26&gp=0.jpg', 'share/20210528/6a429b8f2fa5e2e930b1643ee81dec50.jpg', '23c2b62ad66bae3157965de8a79f4273', 'f580abbf824bd0f152c544ffde9159f39325d852', 'jpg', null);
+INSERT INTO `asset` VALUES ('41', '1', '26822', '1622183898', '1', '0', '91d17c199e87221d8a1435c7ee833f27ea5b660d8762be813c6fb33dddf048ec', 'u=186666979,2510514346&fm=26&gp=0.jpg', 'share/20210528/cc6d53960305e47e2d253469cff80fee.jpg', '91d17c199e87221d8a1435c7ee833f27', '6c0d3f9e8a86ad8ae2458a63997f8475cc3bdb7f', 'jpg', null);
+INSERT INTO `asset` VALUES ('42', '1', '7267', '1622183917', '1', '0', 'a586bb9377d063f30babb9c39db8e8e34dea4357c23b049e0f57f8b181e5dd60', 'u=1310562459,2523297796&fm=26&gp=0.jpg', 'share/20210528/0c20cb7523ee6bf0a51deebdfc677741.jpg', 'a586bb9377d063f30babb9c39db8e8e3', '9241af707fb21020d0e918b980ab569934e57b91', 'jpg', null);
+INSERT INTO `asset` VALUES ('43', '1', '28772', '1622184142', '1', '0', '10549ed69156b634ec69e86d31852859f1c8ab627dea6658a33b6f17f4c7d927', 'u=3960596575,3106209999&fm=26&gp=0.jpg', 'share/20210528/04345410ae9c39c1a54d6c59bb9fe741.jpg', '10549ed69156b634ec69e86d31852859', 'e53125b697d2c8af5bc5faba405a6774499b11dd', 'jpg', null);
+INSERT INTO `asset` VALUES ('44', '1', '8903', '1622203433', '1', '0', 'd98e1f5baeaa55281897b1ed0eef45beabeca3ffad2a4ede98c8c5f1b40f7f03', 'u=177069174,439527001&fm=26&gp=0.jpg', 'share/20210528/232b6d8c0415ff4f27542845814f6790.jpg', 'd98e1f5baeaa55281897b1ed0eef45be', 'c80e9da56f4d87b3bb82738854ea667ee92f9da8', 'jpg', null);
+INSERT INTO `asset` VALUES ('45', '1', '38096', '1622206461', '1', '0', '3ab968222cc1703417e5b1c8a62cb039f887d6970df3d4ce9065352382ea583a', 'fxt_1.jpg', 'share/20210528/51fb7f1ce7787500a4cc076c16bd78f0.jpg', '3ab968222cc1703417e5b1c8a62cb039', '5ef197fb0896ac15c32965a612a83dbcd89c92d1', 'jpg', null);
+INSERT INTO `asset` VALUES ('46', '1', '14938', '1622206476', '1', '0', '283fe51f9638b6e2da7dc0149269a965757f977be9d02c9cb8a4330217bae480', 'fxt_2.jpg', 'share/20210528/81ffdaa9339160af6c7abfa95b5451a7.jpg', '283fe51f9638b6e2da7dc0149269a965', '45c826f3ca39d181d0dfb1f686cc52a54ab0a5e2', 'jpg', null);
+INSERT INTO `asset` VALUES ('47', '1', '13009', '1622206483', '1', '0', 'b6ec5a90bfadab54d3dabb523b76151027e6bd09189229039e2bb300a2690200', 'fxt_3.jpg', 'share/20210528/5ac5580ab43f52059c26736f2ce21abd.jpg', 'b6ec5a90bfadab54d3dabb523b761510', '18b1c84418aa527e282cc17a96931f63df5fd094', 'jpg', null);
 
-CREATE TABLE `friend_box_record` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  `friend_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '好友id',
+-- ----------------------------
+-- Table structure for map
+-- ----------------------------
+DROP TABLE IF EXISTS `map`;
+CREATE TABLE `map` (
+  `map_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `map_name` varchar(16) NOT NULL DEFAULT '' COMMENT '地图名称',
+  `map_desc` varchar(255) NOT NULL DEFAULT '' COMMENT '地图说明',
+  `e` int(10) NOT NULL DEFAULT '0' COMMENT '东边坐标',
+  `w` int(10) NOT NULL DEFAULT '0' COMMENT '西边坐标',
+  `n` int(10) NOT NULL DEFAULT '0' COMMENT '北边坐标',
+  `s` int(10) NOT NULL DEFAULT '0' COMMENT '南边坐标',
+  `map` varchar(16) DEFAULT NULL COMMENT 'ID别名',
+  `map_group` varchar(16) DEFAULT '' COMMENT '地图组',
+  PRIMARY KEY (`map_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=637 DEFAULT CHARSET=utf8mb4 COMMENT='地图';
+
+-- ----------------------------
+-- Records of map
+-- ----------------------------
+INSERT INTO `map` VALUES ('1', '修道院后门', '', '0', '0', '0', '2', '修道院', '修道院');
+INSERT INTO `map` VALUES ('2', '哈根爵士墓', '', '0', '0', '0', '4', '修道院', '修道院');
+INSERT INTO `map` VALUES ('3', '公墓2', '', '4', '0', '0', '0', '修道院', '公墓');
+INSERT INTO `map` VALUES ('4', '公墓1', '', '5', '3', '2', '6', '修道院', '公墓');
+INSERT INTO `map` VALUES ('5', '公墓3', '', '0', '4', '0', '0', '修道院', '公墓');
+INSERT INTO `map` VALUES ('6', '小祭坛', '', '0', '0', '4', '7', '修道院', '修道院');
+INSERT INTO `map` VALUES ('7', '墓地入口', '', '0', '0', '6', '8', '修道院', '修道院');
+INSERT INTO `map` VALUES ('8', '圣物堂', '', '0', '0', '7', '9', '修道院', '修道院');
+INSERT INTO `map` VALUES ('9', '祈愿大厅', '', '0', '0', '8', '15', '修道院', '修道院');
+INSERT INTO `map` VALUES ('10', '平原小路七', '', '11', '0', '0', '17', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('11', '平原小路八', '', '12', '10', '0', '0', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('12', '平原小路九', '', '13', '11', '0', '0', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('13', '平原小路十', '', '0', '12', '0', '20', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('14', '院长室', '', '15', '0', '0', '0', '修道院', '修道院');
+INSERT INTO `map` VALUES ('15', '圣子堂', '', '16', '14', '9', '24', '修道院', '修道院');
+INSERT INTO `map` VALUES ('16', '储物室', '', '0', '15', '0', '0', '修道院', '修道院');
+INSERT INTO `map` VALUES ('17', '平原小路六', '', '0', '0', '10', '25', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('18', '防御哨塔一', '', '19', '0', '0', '26', '骑士团战场', '防御哨塔');
+INSERT INTO `map` VALUES ('19', '外侧城墙十一', '', '20', '18', '0', '0', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('20', '骑士团后门', '', '21', '19', '13', '28', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('21', '外侧城墙十二', '', '22', '20', '0', '0', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('22', '防御哨塔三', '', '0', '21', '0', '30', '骑士团战场', '防御哨塔');
+INSERT INTO `map` VALUES ('23', '防御栅栏七', '', '0', '0', '0', '32', '高原', '防御栅栏');
+INSERT INTO `map` VALUES ('24', '盥洗厅', '', '0', '0', '15', '35', '修道院', '修道院');
+INSERT INTO `map` VALUES ('25', '平原小路五', '', '0', '0', '17', '36', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('26', '外侧城墙一', '', '0', '0', '18', '37', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('27', '内侧哨塔一', '', '28', '0', '0', '38', '骑士团战场', '内侧哨塔');
+INSERT INTO `map` VALUES ('28', '骑士团内门二', '', '29', '27', '20', '39', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('29', '内侧哨塔三', '', '0', '28', '0', '40', '骑士团战场', '内侧哨塔');
+INSERT INTO `map` VALUES ('30', '外侧城墙五', '', '0', '0', '22', '41', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('31', '防御栅栏六', '', '32', '0', '0', '0', '高原', '防御栅栏');
+INSERT INTO `map` VALUES ('32', '埃利斯储备所', '', '33', '31', '23', '42', '高原', '山间');
+INSERT INTO `map` VALUES ('33', '防御栅栏八', '', '0', '32', '0', '0', '高原', '防御栅栏');
+INSERT INTO `map` VALUES ('34', '月弦之地', '', '0', '0', '0', '43', '城镇', '城镇');
+INSERT INTO `map` VALUES ('35', '喷水池', '', '0', '0', '24', '45', '修道院', '修道院');
+INSERT INTO `map` VALUES ('36', '平原小路四', '', '0', '0', '25', '47', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('37', '外侧城墙二', '', '38', '0', '26', '48', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('38', '内侧城墙一', '', '0', '37', '27', '49', '骑士团战场', '内侧城墙');
+INSERT INTO `map` VALUES ('39', '补给储藏室', '', '0', '0', '28', '50', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('40', '内侧城墙三', '', '41', '0', '29', '51', '骑士团战场', '内侧城墙');
+INSERT INTO `map` VALUES ('41', '外侧城墙六', '', '0', '40', '30', '52', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('42', '埃利斯要塞', '', '0', '0', '32', '56', '高原', '山间');
+INSERT INTO `map` VALUES ('43', '练武场', '', '0', '0', '34', '60', '城镇', '城镇');
+INSERT INTO `map` VALUES ('44', '西休息厅', '', '45', '0', '0', '0', '修道院', '修道院');
+INSERT INTO `map` VALUES ('45', '修道院前庭', '', '46', '44', '35', '61', '修道院', '修道院');
+INSERT INTO `map` VALUES ('46', '东休息厅', '', '0', '45', '0', '0', '修道院', '修道院');
+INSERT INTO `map` VALUES ('47', '平原小路三', '', '0', '0', '36', '62', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('48', '外侧城墙三', '', '0', '0', '37', '63', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('49', '内侧城墙二', '', '50', '48', '38', '64', '骑士团战场', '内侧城墙');
+INSERT INTO `map` VALUES ('50', '中央指挥所', '', '51', '49', '39', '65', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('51', '内侧城墙四', '', '0', '50', '40', '66', '骑士团战场', '内侧城墙');
+INSERT INTO `map` VALUES ('52', '外侧城墙七', '', '0', '0', '41', '67', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('53', '士兵宿舍三', '', '54', '0', '0', '0', '高原', '士兵宿舍');
+INSERT INTO `map` VALUES ('54', '士兵宿舍二', '', '55', '53', '0', '0', '高原', '士兵宿舍');
+INSERT INTO `map` VALUES ('55', '士兵宿舍一', '', '56', '54', '0', '0', '高原', '士兵宿舍');
+INSERT INTO `map` VALUES ('56', '要塞石径二', '', '57', '55', '42', '68', '高原', '要塞石径');
+INSERT INTO `map` VALUES ('57', '要塞石径三', '', '58', '56', '0', '0', '高原', '要塞石径');
+INSERT INTO `map` VALUES ('58', '要塞石径四', '', '59', '57', '0', '0', '高原', '要塞石径');
+INSERT INTO `map` VALUES ('59', '要塞石径五', '', '0', '58', '0', '0', '高原', '要塞石径');
+INSERT INTO `map` VALUES ('60', '约亚河畔', '', '0', '0', '43', '75', '城镇', '城镇');
+INSERT INTO `map` VALUES ('61', '修道院正门', '', '0', '0', '45', '77', '修道院', '修道院');
+INSERT INTO `map` VALUES ('62', '平原小路二', '', '0', '0', '47', '78', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('63', '外侧城墙四', '', '0', '0', '48', '79', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('64', '内侧哨塔二', '', '65', '0', '49', '0', '骑士团战场', '内侧哨塔');
+INSERT INTO `map` VALUES ('65', '骑士团内门一', '', '66', '64', '50', '81', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('66', '内侧哨塔四', '', '0', '65', '51', '0', '骑士团战场', '内侧哨塔');
+INSERT INTO `map` VALUES ('67', '外侧城墙八', '', '0', '0', '52', '83', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('68', '要塞石径一', '', '0', '0', '56', '86', '高原', '要塞石径');
+INSERT INTO `map` VALUES ('69', '丘陵小径二', '', '70', '0', '0', '89', '高原', '丘陵小径');
+INSERT INTO `map` VALUES ('70', '丘陵小径三', '', '71', '69', '0', '0', '高原', '丘陵小径');
+INSERT INTO `map` VALUES ('71', '丘陵小径四', '', '0', '70', '0', '90', '高原', '丘陵小径');
+INSERT INTO `map` VALUES ('72', '洞口', '', '73', '0', '0', '92', '城镇', '城镇');
+INSERT INTO `map` VALUES ('73', '荒野', '', '74', '72', '0', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('74', '教堂', '', '75', '73', '0', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('75', '中央广场', '', '76', '74', '60', '94', '城镇', '城镇');
+INSERT INTO `map` VALUES ('76', '图书馆', '', '0', '75', '0', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('77', '黑森林路口', '', '0', '0', '61', '98', '修道院', '修道院');
+INSERT INTO `map` VALUES ('78', '平原小路一', '', '0', '0', '62', '100', '骑士团战场', '平原小路');
+INSERT INTO `map` VALUES ('79', '防御哨塔二', '', '80', '0', '63', '0', '骑士团战场', '防御哨塔');
+INSERT INTO `map` VALUES ('80', '外侧城墙九', '', '81', '79', '0', '0', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('81', '骑士团大门', '', '82', '80', '65', '103', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('82', '外侧城墙十', '', '83', '81', '0', '0', '骑士团战场', '外侧城墙');
+INSERT INTO `map` VALUES ('83', '防御哨塔四', '', '0', '82', '67', '0', '骑士团战场', '防御哨塔');
+INSERT INTO `map` VALUES ('84', '防御栅栏一', '', '85', '0', '0', '0', '高原', '防御栅栏');
+INSERT INTO `map` VALUES ('85', '防御栅栏二', '', '86', '84', '0', '0', '高原', '防御栅栏');
+INSERT INTO `map` VALUES ('86', '防御栅栏三', '', '87', '85', '68', '113', '高原', '防御栅栏');
+INSERT INTO `map` VALUES ('87', '防御栅栏四', '', '88', '86', '0', '0', '高原', '防御栅栏');
+INSERT INTO `map` VALUES ('88', '防御栅栏五', '', '0', '87', '0', '0', '高原', '防御栅栏');
+INSERT INTO `map` VALUES ('89', '丘陵小径一', '', '0', '0', '69', '116', '高原', '丘陵小径');
+INSERT INTO `map` VALUES ('90', '丘陵小径五', '', '91', '0', '71', '0', '高原', '丘陵小径');
+INSERT INTO `map` VALUES ('91', '丘陵小径六', '', '0', '90', '0', '117', '高原', '丘陵小径');
+INSERT INTO `map` VALUES ('92', '山洞1', '', '0', '0', '72', '118', '地下', '山洞');
+INSERT INTO `map` VALUES ('93', '杂货铺', '', '94', '0', '0', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('94', '集市', '', '95', '93', '75', '120', '城镇', '城镇');
+INSERT INTO `map` VALUES ('95', '铁匠铺', '', '96', '94', '0', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('96', '东城门', '', '97', '95', '0', '122', '城镇', '城镇');
+INSERT INTO `map` VALUES ('97', '碎石路一', '', '98', '96', '0', '123', '修道院', '碎石路');
+INSERT INTO `map` VALUES ('98', '碎石路二', '', '99', '97', '77', '0', '修道院', '碎石路');
+INSERT INTO `map` VALUES ('99', '扬尘小径一', '', '100', '98', '0', '0', '骑士团战场', '扬尘小径');
+INSERT INTO `map` VALUES ('100', '扬尘小径二', '', '101', '99', '78', '124', '骑士团战场', '扬尘小径');
+INSERT INTO `map` VALUES ('101', '扬尘小径三', '', '102', '100', '0', '0', '骑士团战场', '扬尘小径');
+INSERT INTO `map` VALUES ('102', '灰烬战场二', '', '103', '101', '0', '0', '骑士团战场', '灰烬战场');
+INSERT INTO `map` VALUES ('103', '灰烬战场一', '', '104', '102', '81', '127', '骑士团战场', '灰烬战场');
+INSERT INTO `map` VALUES ('104', '灰烬战场三', '', '105', '103', '0', '0', '骑士团战场', '灰烬战场');
+INSERT INTO `map` VALUES ('105', '灰烬战场四', '', '106', '104', '0', '0', '骑士团战场', '灰烬战场');
+INSERT INTO `map` VALUES ('106', '灰烬坟场一', '', '107', '105', '0', '0', '骑士团战场', '灰烬坟场');
+INSERT INTO `map` VALUES ('107', '灰烬坟场二', '', '108', '106', '0', '0', '骑士团战场', '灰烬坟场');
+INSERT INTO `map` VALUES ('108', '风蚀的路标', '', '109', '107', '0', '0', '高原', '山间');
+INSERT INTO `map` VALUES ('109', '山间小路一', '', '110', '108', '0', '0', '高原', '山间小路');
+INSERT INTO `map` VALUES ('110', '山间小路二', '', '111', '109', '0', '0', '高原', '山间小路');
+INSERT INTO `map` VALUES ('111', '山间小路三', '', '112', '110', '0', '0', '高原', '山间小路');
+INSERT INTO `map` VALUES ('112', '山间小路四', '', '113', '111', '0', '0', '高原', '山间小路');
+INSERT INTO `map` VALUES ('113', '山间小路五', '', '114', '112', '86', '132', '高原', '山间小路');
+INSERT INTO `map` VALUES ('114', '山间小路六', '', '115', '113', '0', '0', '高原', '山间小路');
+INSERT INTO `map` VALUES ('115', '山间小路七', '', '116', '114', '0', '0', '高原', '山间小路');
+INSERT INTO `map` VALUES ('116', '山间小路八', '', '0', '115', '89', '135', '高原', '山间小路');
+INSERT INTO `map` VALUES ('117', '林格尔村落', '', '0', '0', '91', '137', '高原', '山间');
+INSERT INTO `map` VALUES ('118', '山洞2', '', '0', '0', '92', '138', '地下', '山洞');
+INSERT INTO `map` VALUES ('119', '马戏团', '', '120', '0', '0', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('120', '壁炉旅店', '', '121', '119', '94', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('121', '角斗场一', '', '0', '120', '0', '139', '城镇', '城镇');
+INSERT INTO `map` VALUES ('122', '喧哗小区', '', '0', '0', '96', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('123', '碎石路三', '', '0', '0', '97', '141', '修道院', '碎石路');
+INSERT INTO `map` VALUES ('124', '平原小径一', '', '0', '0', '100', '142', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('125', '外寨防御二', '', '126', '0', '0', '143', '骑士团战场', '外寨防御');
+INSERT INTO `map` VALUES ('126', '外寨工事九', '', '127', '125', '0', '0', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('127', '前寨大门', '', '128', '126', '103', '145', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('128', '外寨工事十', '', '129', '127', '0', '0', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('129', '外寨防御四', '', '0', '128', '0', '147', '骑士团战场', '外寨防御');
+INSERT INTO `map` VALUES ('130', '防御围栏一', '', '131', '0', '0', '0', '高原', '防御围栏');
+INSERT INTO `map` VALUES ('131', '防御围栏二', '', '132', '130', '0', '0', '高原', '防御围栏');
+INSERT INTO `map` VALUES ('132', '防御围栏三', '', '133', '131', '113', '148', '高原', '防御围栏');
+INSERT INTO `map` VALUES ('133', '防御围栏四', '', '134', '132', '0', '0', '高原', '防御围栏');
+INSERT INTO `map` VALUES ('134', '防御围栏五', '', '0', '133', '0', '0', '高原', '防御围栏');
+INSERT INTO `map` VALUES ('135', '山地小径一', '', '0', '0', '116', '149', '高原', '山地小径');
+INSERT INTO `map` VALUES ('136', '山地小径五', '', '137', '0', '0', '151', '高原', '山地小径');
+INSERT INTO `map` VALUES ('137', '山地小径六', '', '0', '136', '117', '0', '高原', '山地小径');
+INSERT INTO `map` VALUES ('138', '山洞3', '', '0', '0', '118', '156', '地下', '山洞');
+INSERT INTO `map` VALUES ('139', '角斗场二', '', '140', '0', '121', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('140', '角斗场三', '', '0', '139', '0', '0', '城镇', '城镇');
+INSERT INTO `map` VALUES ('141', '碎石路四', '', '0', '0', '123', '162', '修道院', '碎石路');
+INSERT INTO `map` VALUES ('142', '平原小径二', '', '0', '0', '124', '163', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('143', '外寨工事四', '', '0', '0', '125', '164', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('144', '内寨防御二', '', '145', '0', '0', '165', '骑士团战场', '内寨防御');
+INSERT INTO `map` VALUES ('145', '内寨前庭', '', '146', '144', '127', '166', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('146', '内寨防御三', '', '0', '145', '0', '0', '骑士团战场', '内寨防御');
+INSERT INTO `map` VALUES ('147', '外寨工事八', '', '0', '0', '129', '168', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('148', '石板路一', '', '0', '0', '132', '172', '高原', '石板路');
+INSERT INTO `map` VALUES ('149', '山地小径二', '', '150', '0', '135', '0', '高原', '山地小径');
+INSERT INTO `map` VALUES ('150', '山地小径三', '', '151', '149', '0', '0', '高原', '山地小径');
+INSERT INTO `map` VALUES ('151', '山地小径四', '', '152', '150', '136', '0', '高原', '山地小径');
+INSERT INTO `map` VALUES ('152', '山顶石路一', '', '153', '151', '0', '0', '高原', '山顶石路');
+INSERT INTO `map` VALUES ('153', '山顶石路二', '', '0', '152', '0', '176', '高原', '山顶石路');
+INSERT INTO `map` VALUES ('154', '密室2', '', '155', '0', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('155', '密室1', '', '156', '154', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('156', '山洞4', '', '157', '155', '138', '177', '地下', '山洞');
+INSERT INTO `map` VALUES ('157', '密室3', '', '158', '156', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('158', '密室4', '', '159', '157', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('159', '密室5', '', '160', '158', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('160', '密室6', '', '161', '159', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('161', '密室7', '', '0', '160', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('162', '碎石路五', '', '0', '0', '141', '180', '修道院', '碎石路');
+INSERT INTO `map` VALUES ('163', '平原小径三', '', '0', '0', '142', '181', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('164', '外寨工事三', '', '0', '0', '143', '182', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('165', '内寨工事二', '', '166', '0', '144', '183', '骑士团战场', '内寨工事');
+INSERT INTO `map` VALUES ('166', '中央大帐', '', '167', '165', '145', '184', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('167', '内寨工事四', '', '0', '166', '0', '185', '骑士团战场', '内寨工事');
+INSERT INTO `map` VALUES ('168', '外寨工事七', '', '0', '0', '147', '186', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('169', '石板路五', '', '170', '0', '0', '0', '高原', '石板路');
+INSERT INTO `map` VALUES ('170', '石板路四', '', '171', '169', '0', '0', '高原', '石板路');
+INSERT INTO `map` VALUES ('171', '石板路三', '', '172', '170', '0', '0', '高原', '石板路');
+INSERT INTO `map` VALUES ('172', '石板路二', '', '173', '171', '148', '187', '高原', '石板路');
+INSERT INTO `map` VALUES ('173', '兵士帐篷一', '', '174', '172', '0', '0', '高原', '兵士帐篷');
+INSERT INTO `map` VALUES ('174', '兵士帐篷二', '', '175', '173', '0', '0', '高原', '兵士帐篷');
+INSERT INTO `map` VALUES ('175', '兵士帐篷三', '', '0', '174', '0', '0', '高原', '兵士帐篷');
+INSERT INTO `map` VALUES ('176', '山顶石路三', '', '0', '0', '153', '192', '高原', '山顶石路');
+INSERT INTO `map` VALUES ('177', '山洞5', '', '178', '0', '156', '197', '地下', '山洞');
+INSERT INTO `map` VALUES ('178', '密室8', '', '179', '177', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('179', '密室9', '', '0', '178', '0', '0', '地下', '密室');
+INSERT INTO `map` VALUES ('180', '碎石路六', '', '0', '0', '162', '198', '修道院', '碎石路');
+INSERT INTO `map` VALUES ('181', '平原小径四', '', '0', '0', '163', '199', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('182', '外寨工事二', '', '183', '0', '164', '200', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('183', '内寨工事一', '', '184', '182', '165', '201', '骑士团战场', '内寨工事');
+INSERT INTO `map` VALUES ('184', '物资大帐', '', '185', '183', '166', '202', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('185', '内寨工事三', '', '186', '184', '167', '203', '骑士团战场', '内寨工事');
+INSERT INTO `map` VALUES ('186', '外寨工事六', '', '0', '185', '168', '204', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('187', '弗兰村高塔', '', '0', '0', '172', '206', '高原', '山间');
+INSERT INTO `map` VALUES ('188', '高原营地一', '', '189', '0', '0', '208', '高原', '高原营地');
+INSERT INTO `map` VALUES ('189', '高原小径三', '', '190', '188', '0', '209', '高原', '高原小径');
+INSERT INTO `map` VALUES ('190', '高原小径二', '', '191', '189', '0', '0', '高原', '高原小径');
+INSERT INTO `map` VALUES ('191', '高原小径一', '', '192', '190', '0', '0', '高原', '高原小径');
+INSERT INTO `map` VALUES ('192', '山顶石路四', '', '193', '191', '176', '0', '高原', '山顶石路');
+INSERT INTO `map` VALUES ('193', '高原大路一', '', '194', '192', '0', '0', '高原', '高原大路');
+INSERT INTO `map` VALUES ('194', '高原大路二', '', '195', '193', '0', '0', '高原', '高原大路');
+INSERT INTO `map` VALUES ('195', '高原大路三', '', '196', '194', '0', '215', '高原', '高原大路');
+INSERT INTO `map` VALUES ('196', '高原阵地一', '', '216', '195', '0', '216', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('197', '山洞6', '', '0', '0', '177', '222', '地下', '山洞');
+INSERT INTO `map` VALUES ('198', '碎石路七', '', '0', '0', '180', '223', '修道院', '碎石路');
+INSERT INTO `map` VALUES ('199', '平原小径五', '', '0', '0', '181', '224', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('200', '外寨工事一', '', '0', '0', '182', '225', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('201', '内寨防御一', '', '202', '0', '183', '0', '骑士团战场', '内寨防御');
+INSERT INTO `map` VALUES ('202', '内寨后庭', '', '203', '201', '184', '227', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('203', '内寨防御四', '', '0', '202', '185', '0', '骑士团战场', '内寨防御');
+INSERT INTO `map` VALUES ('204', '外寨工事五', '', '0', '0', '186', '229', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('205', '防御围栏六', '', '206', '0', '0', '0', '高原', '防御围栏');
+INSERT INTO `map` VALUES ('206', '弗兰补给站', '', '207', '205', '187', '230', '高原', '山间');
+INSERT INTO `map` VALUES ('207', '防御围栏八', '', '0', '206', '0', '0', '高原', '防御围栏');
+INSERT INTO `map` VALUES ('208', '高原营地二', '', '0', '0', '188', '231', '高原', '高原营地');
+INSERT INTO `map` VALUES ('209', '高原小径四', '', '210', '0', '189', '232', '高原', '高原小径');
+INSERT INTO `map` VALUES ('210', '裂谷边缘十二', '', '211', '209', '0', '233', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('211', '裂谷边缘十一', '', '212', '210', '0', '0', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('212', '裂谷边缘一', '', '213', '211', '0', '0', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('213', '裂谷边缘二', '', '214', '212', '0', '0', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('214', '裂谷边缘三', '', '215', '213', '0', '234', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('215', '高原大路四', '', '0', '214', '195', '235', '高原', '高原大路');
+INSERT INTO `map` VALUES ('216', '高原阵地二', '', '0', '0', '196', '236', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('217', '山洞12', '', '218', '0', '0', '0', '地下', '山洞');
+INSERT INTO `map` VALUES ('218', '山洞11', '', '219', '217', '0', '0', '地下', '山洞');
+INSERT INTO `map` VALUES ('219', '山洞10', '', '220', '218', '0', '0', '地下', '山洞');
+INSERT INTO `map` VALUES ('220', '山洞9', '', '221', '219', '0', '0', '地下', '山洞');
+INSERT INTO `map` VALUES ('221', '山洞8', '', '222', '220', '0', '0', '地下', '山洞');
+INSERT INTO `map` VALUES ('222', '山洞7', '', '0', '221', '197', '238', '地下', '山洞');
+INSERT INTO `map` VALUES ('223', '碎石路八', '', '0', '0', '198', '240', '修道院', '碎石路');
+INSERT INTO `map` VALUES ('224', '平原小径六', '', '0', '0', '199', '241', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('225', '外寨防御一', '', '226', '0', '200', '0', '骑士团战场', '外寨防御');
+INSERT INTO `map` VALUES ('226', '外寨工事十一', '', '227', '225', '0', '0', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('227', '后寨大门', '', '228', '226', '202', '244', '骑士团战场', '骑士团');
+INSERT INTO `map` VALUES ('228', '外寨工事十二', '', '229', '227', '0', '0', '骑士团战场', '外寨工事');
+INSERT INTO `map` VALUES ('229', '外寨防御三', '', '0', '228', '204', '0', '骑士团战场', '外寨防御');
+INSERT INTO `map` VALUES ('230', '防御围栏七', '', '0', '0', '206', '0', '高原', '防御围栏');
+INSERT INTO `map` VALUES ('231', '高原营地三', '', '0', '0', '208', '245', '高原', '高原营地');
+INSERT INTO `map` VALUES ('232', '高原小径五', '', '0', '0', '209', '246', '高原', '高原小径');
+INSERT INTO `map` VALUES ('233', '裂谷边缘十三', '', '0', '0', '210', '247', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('234', '裂谷边缘四', '', '0', '0', '214', '248', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('235', '高原大路五', '', '0', '0', '215', '249', '高原', '高原大路');
+INSERT INTO `map` VALUES ('236', '高原阵地三', '', '0', '0', '216', '250', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('237', '地洞2', '', '238', '0', '0', '0', '地下', '地洞');
+INSERT INTO `map` VALUES ('238', '地洞1', '', '239', '237', '222', '252', '地下', '地洞');
+INSERT INTO `map` VALUES ('239', '地洞3', '', '0', '238', '0', '0', '地下', '地洞');
+INSERT INTO `map` VALUES ('240', '圣瓦伦丁港', '', '0', '0', '223', '0', '港口', '');
+INSERT INTO `map` VALUES ('241', '平原小径七', '', '242', '0', '224', '0', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('242', '平原小径八', '', '243', '241', '0', '0', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('243', '平原小径九', '', '244', '242', '0', '0', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('244', '平原小径十', '', '0', '243', '227', '0', '骑士团战场', '平原小径');
+INSERT INTO `map` VALUES ('245', '高原营地四', '', '0', '0', '231', '254', '高原', '高原营地');
+INSERT INTO `map` VALUES ('246', '高原小径六', '', '0', '0', '232', '255', '高原', '高原小径');
+INSERT INTO `map` VALUES ('247', '裂谷边缘十四', '', '0', '0', '233', '256', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('248', '裂谷边缘五', '', '0', '0', '234', '257', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('249', '高原大路六', '', '0', '0', '235', '258', '高原', '高原大路');
+INSERT INTO `map` VALUES ('250', '高原阵地四', '', '0', '0', '236', '259', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('251', '地洞5', '', '252', '0', '0', '0', '地下', '地洞');
+INSERT INTO `map` VALUES ('252', '地洞4', '', '253', '251', '238', '261', '地下', '地洞');
+INSERT INTO `map` VALUES ('253', '地洞6', '', '0', '252', '0', '0', '地下', '地洞');
+INSERT INTO `map` VALUES ('254', '高原营地五', '', '0', '0', '245', '263', '高原', '高原营地');
+INSERT INTO `map` VALUES ('255', '高原小径七', '', '0', '0', '246', '264', '高原', '高原小径');
+INSERT INTO `map` VALUES ('256', '裂谷边缘十五', '', '0', '0', '247', '265', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('257', '裂谷边缘六', '', '0', '0', '248', '266', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('258', '高原大路七', '', '0', '0', '249', '267', '高原', '高原大路');
+INSERT INTO `map` VALUES ('259', '高原阵地五', '', '0', '0', '250', '268', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('260', '地洞8', '', '261', '0', '0', '0', '地下', '地洞');
+INSERT INTO `map` VALUES ('261', '地洞7', '', '262', '260', '252', '269', '地下', '地洞');
+INSERT INTO `map` VALUES ('262', '地洞9', '', '0', '261', '0', '0', '地下', '地洞');
+INSERT INTO `map` VALUES ('263', '高原营地六', '', '0', '0', '254', '270', '高原', '高原营地');
+INSERT INTO `map` VALUES ('264', '高原小径八', '', '0', '0', '255', '271', '高原', '高原小径');
+INSERT INTO `map` VALUES ('265', '裂谷边缘十六', '', '0', '0', '256', '272', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('266', '裂谷边缘七', '', '0', '0', '257', '273', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('267', '高原大路八', '', '0', '0', '258', '274', '高原', '高原大路');
+INSERT INTO `map` VALUES ('268', '高原阵地六', '', '0', '0', '259', '275', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('269', '地洞10', '', '0', '0', '261', '276', '地下', '地洞');
+INSERT INTO `map` VALUES ('270', '高原营地七', '', '0', '0', '263', '277', '高原', '高原营地');
+INSERT INTO `map` VALUES ('271', '高原小径九', '', '272', '0', '264', '0', '高原', '高原小径');
+INSERT INTO `map` VALUES ('272', '裂谷边缘十七', '', '0', '271', '265', '278', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('273', '裂谷边缘八', '', '274', '0', '266', '282', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('274', '高原大路九', '', '0', '273', '267', '0', '高原', '高原大路');
+INSERT INTO `map` VALUES ('275', '高原阵地七', '', '0', '0', '268', '283', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('276', '地洞11', '', '0', '0', '269', '0', '地下', '地洞');
+INSERT INTO `map` VALUES ('277', '高原营地八', '', '0', '0', '270', '284', '高原', '高原营地');
+INSERT INTO `map` VALUES ('278', '裂谷边缘十八', '', '279', '0', '272', '0', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('279', '裂谷边缘十九', '', '280', '278', '0', '0', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('280', '裂谷边缘二十', '', '281', '279', '0', '288', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('281', '裂谷边缘十', '', '282', '280', '0', '0', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('282', '裂谷边缘九', '', '0', '281', '273', '0', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('283', '高原阵地八', '', '0', '0', '275', '292', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('284', '高原营地九', '', '285', '0', '277', '293', '高原', '高原营地');
+INSERT INTO `map` VALUES ('285', '高原营地十一', '', '286', '284', '0', '0', '高原', '高原营地');
+INSERT INTO `map` VALUES ('286', '高原营地十二', '', '287', '285', '0', '0', '高原', '高原营地');
+INSERT INTO `map` VALUES ('287', '高原营地十三', '', '288', '286', '0', '0', '高原', '高原营地');
+INSERT INTO `map` VALUES ('288', '裂谷边缘二十一', '', '289', '287', '280', '0', '高原', '裂谷边缘');
+INSERT INTO `map` VALUES ('289', '高原阵地十三', '', '290', '288', '0', '0', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('290', '高原阵地十二', '', '291', '289', '0', '0', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('291', '高原阵地十一', '', '292', '290', '0', '0', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('292', '高原阵地九', '', '0', '291', '283', '294', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('293', '高原营地十', '', '0', '0', '284', '0', '高原', '高原营地');
+INSERT INTO `map` VALUES ('294', '高原阵地十', '', '0', '0', '292', '0', '高原', '高原阵地');
+INSERT INTO `map` VALUES ('295', '帕兰克之墙', '', '0', '0', '0', '300', '神庙', '神庙');
+INSERT INTO `map` VALUES ('296', '水晶神殿四', '', '297', '0', '0', '0', '神庙', '水晶神殿');
+INSERT INTO `map` VALUES ('297', '水晶神殿三', '', '298', '296', '0', '0', '神庙', '水晶神殿');
+INSERT INTO `map` VALUES ('298', '水晶神殿二', '', '299', '297', '0', '0', '神庙', '水晶神殿');
+INSERT INTO `map` VALUES ('299', '水晶神殿一', '', '300', '298', '0', '0', '神庙', '水晶神殿');
+INSERT INTO `map` VALUES ('300', '奥梅金字塔', '', '301', '299', '295', '305', '神庙', '神庙');
+INSERT INTO `map` VALUES ('301', '水晶神殿五', '', '302', '300', '0', '0', '神庙', '水晶神殿');
+INSERT INTO `map` VALUES ('302', '水晶神殿六', '', '303', '301', '0', '0', '神庙', '水晶神殿');
+INSERT INTO `map` VALUES ('303', '水晶神殿七', '', '304', '302', '0', '0', '神庙', '水晶神殿');
+INSERT INTO `map` VALUES ('304', '水晶神殿八', '', '0', '303', '0', '0', '神庙', '水晶神殿');
+INSERT INTO `map` VALUES ('305', '神迹堤道', '', '0', '0', '300', '311', '神庙', '神庙');
+INSERT INTO `map` VALUES ('306', '碎裂焦土', '', '0', '0', '0', '317', '废墟', '碎裂焦土');
+INSERT INTO `map` VALUES ('307', '羽蛇神殿四', '', '308', '0', '0', '0', '神庙', '羽蛇神殿');
+INSERT INTO `map` VALUES ('308', '羽蛇神殿三', '', '309', '307', '0', '0', '神庙', '羽蛇神殿');
+INSERT INTO `map` VALUES ('309', '羽蛇神殿二', '', '310', '308', '0', '0', '神庙', '羽蛇神殿');
+INSERT INTO `map` VALUES ('310', '羽蛇神殿一', '', '311', '309', '0', '0', '神庙', '羽蛇神殿');
+INSERT INTO `map` VALUES ('311', '乌克玛神庙', '', '312', '310', '305', '319', '神庙', '神庙');
+INSERT INTO `map` VALUES ('312', '羽蛇神殿五', '', '313', '311', '0', '0', '神庙', '羽蛇神殿');
+INSERT INTO `map` VALUES ('313', '羽蛇神殿六', '', '314', '312', '0', '0', '神庙', '羽蛇神殿');
+INSERT INTO `map` VALUES ('314', '羽蛇神殿七', '', '315', '313', '0', '0', '神庙', '羽蛇神殿');
+INSERT INTO `map` VALUES ('315', '羽蛇神殿八', '', '0', '314', '0', '0', '神庙', '羽蛇神殿');
+INSERT INTO `map` VALUES ('316', '王族寝宫二', '', '317', '0', '0', '0', '废墟', '王族寝宫');
+INSERT INTO `map` VALUES ('317', '王族寝宫一', '', '318', '316', '306', '322', '废墟', '王族寝宫');
+INSERT INTO `map` VALUES ('318', '王族寝宫三', '', '0', '317', '0', '0', '废墟', '王族寝宫');
+INSERT INTO `map` VALUES ('319', '神庙堤道', '', '0', '0', '311', '329', '神庙', '神庙');
+INSERT INTO `map` VALUES ('320', '后花园废墟二', '', '321', '0', '0', '334', '废墟', '后花园废墟');
+INSERT INTO `map` VALUES ('321', '后花园废墟一', '', '322', '320', '0', '0', '废墟', '后花园废墟');
+INSERT INTO `map` VALUES ('322', '精灵王座废墟', '', '323', '321', '317', '336', '废墟', '碎裂焦土');
+INSERT INTO `map` VALUES ('323', '后花园废墟三', '', '324', '322', '0', '0', '废墟', '后花园废墟');
+INSERT INTO `map` VALUES ('324', '后花园废墟四', '', '0', '323', '0', '338', '废墟', '后花园废墟');
+INSERT INTO `map` VALUES ('325', '炙光之台四', '', '326', '0', '0', '0', '神庙', '炙光之台');
+INSERT INTO `map` VALUES ('326', '炙光之台三', '', '327', '325', '0', '0', '神庙', '炙光之台');
+INSERT INTO `map` VALUES ('327', '炙光之台二', '', '328', '326', '0', '0', '神庙', '炙光之台');
+INSERT INTO `map` VALUES ('328', '炙光之台一', '', '329', '327', '0', '0', '神庙', '炙光之台');
+INSERT INTO `map` VALUES ('329', '科巴观星台', '', '330', '328', '319', '339', '神庙', '神庙');
+INSERT INTO `map` VALUES ('330', '炙光之台五', '', '331', '329', '0', '0', '神庙', '炙光之台');
+INSERT INTO `map` VALUES ('331', '炙光之台六', '', '332', '330', '0', '0', '神庙', '炙光之台');
+INSERT INTO `map` VALUES ('332', '炙光之台七', '', '333', '331', '0', '0', '神庙', '炙光之台');
+INSERT INTO `map` VALUES ('333', '炙光之台八', '', '0', '332', '0', '0', '神庙', '炙光之台');
+INSERT INTO `map` VALUES ('334', '皇家图书馆', '', '0', '0', '320', '340', '废墟', '碎裂焦土');
+INSERT INTO `map` VALUES ('335', '贵族议事厅一', '', '336', '0', '0', '0', '废墟', '贵族议事厅');
+INSERT INTO `map` VALUES ('336', '王座前厅废墟', '', '337', '335', '322', '342', '废墟', '碎裂焦土');
+INSERT INTO `map` VALUES ('337', '贵族议事厅二', '', '0', '336', '0', '0', '废墟', '贵族议事厅');
+INSERT INTO `map` VALUES ('338', '皇家占星室', '', '0', '0', '324', '344', '废墟', '碎裂焦土');
+INSERT INTO `map` VALUES ('339', '观星堤道', '', '0', '0', '329', '349', '神庙', '神庙');
+INSERT INTO `map` VALUES ('340', '庭院废墟二', '', '341', '0', '334', '0', '废墟', '庭院废墟');
+INSERT INTO `map` VALUES ('341', '庭院废墟一', '', '342', '340', '0', '0', '废墟', '庭院废墟');
+INSERT INTO `map` VALUES ('342', '精灵王大门', '', '343', '341', '336', '355', '废墟', '碎裂焦土');
+INSERT INTO `map` VALUES ('343', '庭院废墟三', '', '344', '342', '0', '0', '废墟', '庭院废墟');
+INSERT INTO `map` VALUES ('344', '庭院废墟四', '', '0', '343', '338', '0', '废墟', '庭院废墟');
+INSERT INTO `map` VALUES ('345', '凄凉之丘四', '', '346', '0', '0', '0', '神庙', '凄凉之丘');
+INSERT INTO `map` VALUES ('346', '凄凉之丘三', '', '347', '345', '0', '0', '神庙', '凄凉之丘');
+INSERT INTO `map` VALUES ('347', '凄凉之丘二', '', '348', '346', '0', '0', '神庙', '凄凉之丘');
+INSERT INTO `map` VALUES ('348', '凄凉之丘一', '', '349', '347', '0', '0', '神庙', '凄凉之丘');
+INSERT INTO `map` VALUES ('349', '荒芜旷野五', '', '350', '348', '339', '357', '神庙', '荒芜旷野');
+INSERT INTO `map` VALUES ('350', '凄凉之丘五', '', '351', '349', '0', '0', '神庙', '凄凉之丘');
+INSERT INTO `map` VALUES ('351', '凄凉之丘六', '', '352', '350', '0', '0', '神庙', '凄凉之丘');
+INSERT INTO `map` VALUES ('352', '凄凉之丘七', '', '353', '351', '0', '0', '神庙', '凄凉之丘');
+INSERT INTO `map` VALUES ('353', '凄凉之丘八', '', '0', '352', '0', '0', '神庙', '凄凉之丘');
+INSERT INTO `map` VALUES ('354', '平民区废墟三', '', '355', '0', '0', '358', '废墟', '平民区废墟');
+INSERT INTO `map` VALUES ('355', '荒芜焦土五', '', '356', '354', '342', '359', '废墟', '荒芜焦土');
+INSERT INTO `map` VALUES ('356', '平民区废墟六', '', '0', '355', '0', '360', '废墟', '平民区废墟');
+INSERT INTO `map` VALUES ('357', '荒芜旷野四', '', '0', '0', '349', '365', '神庙', '荒芜旷野');
+INSERT INTO `map` VALUES ('358', '平民区废墟二', '', '0', '0', '354', '371', '废墟', '平民区废墟');
+INSERT INTO `map` VALUES ('359', '荒芜焦土四', '', '0', '0', '355', '372', '废墟', '荒芜焦土');
+INSERT INTO `map` VALUES ('360', '平民区废墟五', '', '0', '0', '356', '373', '废墟', '平民区废墟');
+INSERT INTO `map` VALUES ('361', '狂风沙丘四', '', '362', '0', '0', '0', '神庙', '狂风沙丘');
+INSERT INTO `map` VALUES ('362', '狂风沙丘三', '', '363', '361', '0', '0', '神庙', '狂风沙丘');
+INSERT INTO `map` VALUES ('363', '狂风沙丘二', '', '364', '362', '0', '0', '神庙', '狂风沙丘');
+INSERT INTO `map` VALUES ('364', '狂风沙丘一', '', '365', '363', '0', '0', '神庙', '狂风沙丘');
+INSERT INTO `map` VALUES ('365', '荒芜旷野三', '', '366', '364', '357', '376', '神庙', '荒芜旷野');
+INSERT INTO `map` VALUES ('366', '狂风沙丘五', '', '367', '365', '0', '0', '神庙', '狂风沙丘');
+INSERT INTO `map` VALUES ('367', '狂风沙丘六', '', '368', '366', '0', '0', '神庙', '狂风沙丘');
+INSERT INTO `map` VALUES ('368', '狂风沙丘七', '', '369', '367', '0', '0', '神庙', '狂风沙丘');
+INSERT INTO `map` VALUES ('369', '狂风沙丘八', '', '0', '368', '0', '0', '神庙', '狂风沙丘');
+INSERT INTO `map` VALUES ('370', '废弃精灵哨塔二', '', '0', '0', '0', '377', '废墟', '废弃精灵哨塔');
+INSERT INTO `map` VALUES ('371', '平民区废墟一', '', '372', '0', '358', '0', '废墟', '平民区废墟');
+INSERT INTO `map` VALUES ('372', '荒芜焦土三', '', '373', '371', '359', '379', '废墟', '荒芜焦土');
+INSERT INTO `map` VALUES ('373', '平民区废墟四', '', '0', '372', '360', '0', '废墟', '平民区废墟');
+INSERT INTO `map` VALUES ('374', '废弃精灵哨塔四', '', '0', '0', '0', '381', '废墟', '废弃精灵哨塔');
+INSERT INTO `map` VALUES ('375', '荒芜旷野一', '', '376', '0', '0', '382', '神庙', '荒芜旷野');
+INSERT INTO `map` VALUES ('376', '荒芜旷野二', '', '0', '375', '365', '0', '神庙', '荒芜旷野');
+INSERT INTO `map` VALUES ('377', '废弃精灵哨塔一', '', '378', '0', '370', '0', '废墟', '废弃精灵哨塔');
+INSERT INTO `map` VALUES ('378', '荒芜焦土六', '', '379', '377', '0', '0', '废墟', '荒芜焦土');
+INSERT INTO `map` VALUES ('379', '荒芜焦土二', '', '380', '378', '372', '383', '废墟', '荒芜焦土');
+INSERT INTO `map` VALUES ('380', '荒芜焦土七', '', '381', '379', '0', '0', '废墟', '荒芜焦土');
+INSERT INTO `map` VALUES ('381', '废弃精灵哨塔三', '', '0', '380', '374', '0', '废墟', '废弃精灵哨塔');
+INSERT INTO `map` VALUES ('382', '亡骨之地', '', '0', '0', '375', '384', '水晶湖', '水晶湖');
+INSERT INTO `map` VALUES ('383', '荒芜焦土一', '', '0', '0', '379', '390', '废墟', '荒芜焦土');
+INSERT INTO `map` VALUES ('384', '翡翠湿地四', '', '0', '0', '382', '394', '水晶湖', '翡翠湿地');
+INSERT INTO `map` VALUES ('385', '红宝石河五', '', '386', '0', '0', '395', '水晶湖', '红宝石河');
+INSERT INTO `map` VALUES ('386', '反抗军营地三', '', '387', '385', '0', '396', '水晶湖', '反抗军营地');
+INSERT INTO `map` VALUES ('387', '反抗军指挥所', '', '0', '386', '0', '397', '水晶湖', '水晶湖');
+INSERT INTO `map` VALUES ('388', '白桦林三', '', '389', '0', '0', '398', '废墟', '白桦林');
+INSERT INTO `map` VALUES ('389', '白桦林四', '', '390', '388', '0', '0', '废墟', '白桦林');
+INSERT INTO `map` VALUES ('390', '神木林', '', '391', '389', '383', '0', '废墟', '神木林');
+INSERT INTO `map` VALUES ('391', '白桦林八', '', '392', '390', '0', '0', '废墟', '白桦林');
+INSERT INTO `map` VALUES ('392', '白桦林七', '', '0', '391', '0', '402', '废墟', '白桦林');
+INSERT INTO `map` VALUES ('393', '耳语海岸四', '', '0', '0', '0', '403', '水晶湖', '耳语海岸');
+INSERT INTO `map` VALUES ('394', '翡翠湿地三', '', '0', '0', '384', '404', '水晶湖', '翡翠湿地');
+INSERT INTO `map` VALUES ('395', '红宝石河四', '', '396', '0', '385', '405', '水晶湖', '红宝石河');
+INSERT INTO `map` VALUES ('396', '反抗军营地二', '', '397', '395', '386', '406', '水晶湖', '反抗军营地');
+INSERT INTO `map` VALUES ('397', '反抗军营地五', '', '0', '396', '387', '407', '水晶湖', '反抗军营地');
+INSERT INTO `map` VALUES ('398', '白桦林二', '', '0', '0', '388', '410', '废墟', '白桦林');
+INSERT INTO `map` VALUES ('399', '暮色湖岸二', '', '400', '0', '0', '411', '废墟', '暮色湖岸');
+INSERT INTO `map` VALUES ('400', '暮色湖岸三', '', '401', '399', '0', '412', '废墟', '暮色湖岸');
+INSERT INTO `map` VALUES ('401', '暮色湖岸四', '', '0', '400', '0', '413', '废墟', '暮色湖岸');
+INSERT INTO `map` VALUES ('402', '白桦林六', '', '0', '0', '392', '414', '废墟', '白桦林');
+INSERT INTO `map` VALUES ('403', '耳语海岸三', '', '0', '0', '393', '415', '水晶湖', '耳语海岸');
+INSERT INTO `map` VALUES ('404', '翡翠湿地二', '', '0', '0', '394', '416', '水晶湖', '翡翠湿地');
+INSERT INTO `map` VALUES ('405', '红宝石河三', '', '406', '0', '395', '417', '水晶湖', '红宝石河');
+INSERT INTO `map` VALUES ('406', '反抗军营地一', '', '407', '405', '396', '0', '水晶湖', '反抗军营地');
+INSERT INTO `map` VALUES ('407', '反抗军营地四', '', '0', '406', '397', '0', '水晶湖', '反抗军营地');
+INSERT INTO `map` VALUES ('408', '河安丘陵二', '', '409', '0', '0', '419', '水晶湖', '河安丘陵');
+INSERT INTO `map` VALUES ('409', '河安丘陵三', '', '0', '408', '0', '420', '水晶湖', '河安丘陵');
+INSERT INTO `map` VALUES ('410', '白桦林一', '', '0', '0', '398', '421', '废墟', '白桦林');
+INSERT INTO `map` VALUES ('411', '暮色湖岸一', '', '0', '0', '399', '422', '废墟', '暮色湖岸');
+INSERT INTO `map` VALUES ('412', '瑞莱斯湖', '', '0', '0', '400', '0', '废墟', '神木林');
+INSERT INTO `map` VALUES ('413', '暮色湖岸五', '', '0', '0', '401', '424', '废墟', '暮色湖岸');
+INSERT INTO `map` VALUES ('414', '白桦林五', '', '0', '0', '402', '425', '废墟', '白桦林');
+INSERT INTO `map` VALUES ('415', '耳语海岸二', '', '0', '0', '403', '426', '水晶湖', '耳语海岸');
+INSERT INTO `map` VALUES ('416', '翡翠湿地一', '', '0', '0', '404', '427', '水晶湖', '翡翠湿地');
+INSERT INTO `map` VALUES ('417', '红宝石河二', '', '418', '0', '405', '0', '水晶湖', '红宝石河');
+INSERT INTO `map` VALUES ('418', '红宝石河一', '', '0', '417', '0', '429', '水晶湖', '红宝石河');
+INSERT INTO `map` VALUES ('419', '河安丘陵一', '', '420', '0', '408', '431', '水晶湖', '河安丘陵');
+INSERT INTO `map` VALUES ('420', '河安丘陵四', '', '0', '419', '409', '0', '水晶湖', '河安丘陵');
+INSERT INTO `map` VALUES ('421', '银松小径六', '', '422', '0', '410', '0', '废墟', '银松小径');
+INSERT INTO `map` VALUES ('422', '银松小径五', '', '423', '421', '411', '0', '废墟', '银松小径');
+INSERT INTO `map` VALUES ('423', '银松小径四', '', '424', '422', '0', '436', '废墟', '银松小径');
+INSERT INTO `map` VALUES ('424', '银松小径七', '', '425', '423', '413', '0', '废墟', '银松小径');
+INSERT INTO `map` VALUES ('425', '银松小径八', '', '0', '424', '414', '0', '废墟', '银松小径');
+INSERT INTO `map` VALUES ('426', '耳语海岸一', '', '427', '0', '415', '439', '水晶湖', '耳语海岸');
+INSERT INTO `map` VALUES ('427', '绿玛瑙河二', '', '428', '426', '416', '440', '水晶湖', '绿玛瑙河');
+INSERT INTO `map` VALUES ('428', '绿玛瑙河一', '', '429', '427', '0', '0', '水晶湖', '绿玛瑙河');
+INSERT INTO `map` VALUES ('429', '水晶湖', '', '430', '428', '418', '441', '水晶湖', '水晶湖');
+INSERT INTO `map` VALUES ('430', '河安大道四', '', '431', '429', '0', '0', '水晶湖', '河安大道');
+INSERT INTO `map` VALUES ('431', '河安大道三', '', '432', '430', '419', '443', '水晶湖', '河安大道');
+INSERT INTO `map` VALUES ('432', '河安大道二', '', '433', '431', '0', '0', '水晶湖', '河安大道');
+INSERT INTO `map` VALUES ('433', '河安大道一', '', '434', '432', '0', '0', '水晶湖', '河安大道');
+INSERT INTO `map` VALUES ('434', '紫杉林四', '', '435', '433', '0', '0', '废墟', '紫杉林');
+INSERT INTO `map` VALUES ('435', '紫杉林三', '', '436', '434', '0', '445', '废墟', '紫杉林');
+INSERT INTO `map` VALUES ('436', '银松小径三', '', '437', '435', '423', '446', '废墟', '银松小径');
+INSERT INTO `map` VALUES ('437', '紫杉林五', '', '438', '436', '0', '447', '废墟', '紫杉林');
+INSERT INTO `map` VALUES ('438', '紫杉林六', '', '0', '437', '0', '0', '废墟', '紫杉林');
+INSERT INTO `map` VALUES ('439', '耳语海岸五', '', '0', '0', '426', '448', '水晶湖', '耳语海岸');
+INSERT INTO `map` VALUES ('440', '翡翠湿地五', '', '0', '0', '427', '449', '水晶湖', '翡翠湿地');
+INSERT INTO `map` VALUES ('441', '蓝宝石河一', '', '442', '0', '429', '0', '水晶湖', '蓝宝石河');
+INSERT INTO `map` VALUES ('442', '蓝宝石河二', '', '0', '441', '0', '452', '水晶湖', '蓝宝石河');
+INSERT INTO `map` VALUES ('443', '河安丘陵五', '', '444', '0', '431', '453', '水晶湖', '河安丘陵');
+INSERT INTO `map` VALUES ('444', '河安丘陵八', '', '0', '443', '0', '454', '水晶湖', '河安丘陵');
+INSERT INTO `map` VALUES ('445', '紫杉林一', '', '446', '0', '435', '0', '废墟', '紫杉林');
+INSERT INTO `map` VALUES ('446', '银松小径二', '', '447', '445', '436', '455', '废墟', '银松小径');
+INSERT INTO `map` VALUES ('447', '紫杉林二', '', '0', '446', '437', '0', '废墟', '紫杉林');
+INSERT INTO `map` VALUES ('448', '耳语海岸六', '', '0', '0', '439', '456', '水晶湖', '耳语海岸');
+INSERT INTO `map` VALUES ('449', '翡翠湿地六', '', '0', '0', '440', '457', '水晶湖', '翡翠湿地');
+INSERT INTO `map` VALUES ('450', '远征军营地四', '', '451', '0', '0', '458', '水晶湖', '远征军营地');
+INSERT INTO `map` VALUES ('451', '远征军营地一', '', '452', '450', '0', '459', '水晶湖', '远征军营地');
+INSERT INTO `map` VALUES ('452', '蓝宝石河三', '', '0', '451', '442', '460', '水晶湖', '蓝宝石河');
+INSERT INTO `map` VALUES ('453', '河安丘陵六', '', '454', '0', '443', '0', '水晶湖', '河安丘陵');
+INSERT INTO `map` VALUES ('454', '河安丘陵七', '', '0', '453', '444', '0', '水晶湖', '河安丘陵');
+INSERT INTO `map` VALUES ('455', '银松小径一', '', '0', '0', '446', '461', '废墟', '银松小径');
+INSERT INTO `map` VALUES ('456', '耳语海岸七', '', '0', '0', '448', '0', '水晶湖', '耳语海岸');
+INSERT INTO `map` VALUES ('457', '翡翠湿地七', '', '0', '0', '449', '462', '水晶湖', '翡翠湿地');
+INSERT INTO `map` VALUES ('458', '远征军营地五', '', '459', '0', '450', '463', '水晶湖', '远征军营地');
+INSERT INTO `map` VALUES ('459', '远征军营地二', '', '460', '458', '451', '464', '水晶湖', '远征军营地');
+INSERT INTO `map` VALUES ('460', '蓝宝石河四', '', '0', '459', '452', '465', '水晶湖', '蓝宝石河');
+INSERT INTO `map` VALUES ('461', '晴空城门', '', '0', '0', '455', '469', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('462', '翡翠湿地八', '', '0', '0', '457', '0', '水晶湖', '翡翠湿地');
+INSERT INTO `map` VALUES ('463', '远征军指挥所', '', '464', '0', '458', '0', '水晶湖', '水晶湖');
+INSERT INTO `map` VALUES ('464', '远征军营地三', '', '465', '463', '459', '0', '水晶湖', '远征军营地');
+INSERT INTO `map` VALUES ('465', '蓝宝石河五', '', '0', '464', '460', '0', '水晶湖', '蓝宝石河');
+INSERT INTO `map` VALUES ('466', '逐日前厅', '', '467', '0', '0', '0', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('467', '黎明教堂', '', '468', '466', '0', '471', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('468', '北繁星路', '', '469', '467', '0', '472', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('469', '孤叶旅店', '', '470', '468', '461', '473', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('470', '斗兽场一', '', '0', '469', '0', '0', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('471', '歌剧之夜', '', '472', '0', '467', '475', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('472', '月落广场', '', '473', '471', '468', '476', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('473', '红银之傲', '', '0', '472', '469', '477', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('474', '斗兽场二', '', '475', '0', '0', '0', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('475', '黑铁砧', '', '476', '474', '471', '0', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('476', '南繁星路', '', '477', '475', '472', '0', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('477', '午夜神殿', '', '478', '476', '473', '0', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('478', '秘法塔', '', '0', '477', '0', '0', '晴空城', '晴空城');
+INSERT INTO `map` VALUES ('479', '菲比斯海角', '', '480', '0', '0', '0', '菲比斯', '菲比斯');
+INSERT INTO `map` VALUES ('480', '暗礁群二', '', '481', '479', '0', '482', '菲比斯', '暗礁群');
+INSERT INTO `map` VALUES ('481', '暗礁群一', '', '0', '480', '0', '483', '菲比斯', '暗礁群');
+INSERT INTO `map` VALUES ('482', '菲比斯海滩四', '', '483', '0', '480', '0', '菲比斯', '菲比斯海滩');
+INSERT INTO `map` VALUES ('483', '菲比斯密林一', '', '0', '482', '481', '484', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('484', '菲比斯海滩三', '', '485', '0', '483', '486', '菲比斯', '菲比斯海滩');
+INSERT INTO `map` VALUES ('485', '菲比斯密林三', '', '487', '484', '0', '487', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('486', '菲比斯海滩二', '', '0', '0', '484', '491', '菲比斯', '菲比斯海滩');
+INSERT INTO `map` VALUES ('487', '菲比斯密林四', '', '488', '485', '485', '492', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('488', '菲比斯密林十二', '', '489', '487', '0', '0', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('489', '伊斯伍德偏殿一', '', '0', '488', '0', '493', '菲比斯', '伊斯伍德偏殿');
+INSERT INTO `map` VALUES ('490', '布菲湾', '', '491', '0', '0', '0', '菲比斯', '菲比斯');
+INSERT INTO `map` VALUES ('491', '菲比斯海滩一', '', '492', '490', '486', '494', '菲比斯', '菲比斯海滩');
+INSERT INTO `map` VALUES ('492', '菲比斯密林五', '', '0', '491', '487', '495', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('493', '伊斯伍德神庙', '', '0', '0', '489', '496', '菲比斯', '菲比斯');
+INSERT INTO `map` VALUES ('494', '菲比斯海滩五', '', '0', '0', '491', '497', '菲比斯', '菲比斯海滩');
+INSERT INTO `map` VALUES ('495', '菲比斯密林六', '', '0', '0', '492', '498', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('496', '伊斯伍德偏殿二', '', '0', '0', '493', '500', '菲比斯', '伊斯伍德偏殿');
+INSERT INTO `map` VALUES ('497', '菲比斯海滩六', '', '498', '0', '494', '502', '菲比斯', '菲比斯海滩');
+INSERT INTO `map` VALUES ('498', '菲比斯密林七', '', '0', '497', '495', '503', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('499', '菲比斯密林十一', '', '500', '0', '0', '504', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('500', '伊斯伍德偏殿三', '', '0', '499', '496', '0', '菲比斯', '伊斯伍德偏殿');
+INSERT INTO `map` VALUES ('501', '菲比斯海滩七', '', '502', '0', '0', '505', '菲比斯', '菲比斯海滩');
+INSERT INTO `map` VALUES ('502', '菲比斯密林二', '', '503', '501', '497', '506', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('503', '菲比斯密林八', '', '504', '502', '498', '507', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('504', '菲比斯密林十', '', '0', '503', '499', '0', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('505', '暗礁群四', '', '506', '0', '501', '0', '菲比斯', '暗礁群');
+INSERT INTO `map` VALUES ('506', '暗礁群三', '', '0', '505', '502', '0', '菲比斯', '暗礁群');
+INSERT INTO `map` VALUES ('507', '菲比斯密林九', '', '0', '0', '503', '508', '菲比斯', '菲比斯密林');
+INSERT INTO `map` VALUES ('508', '林泉瀑布', '', '0', '0', '507', '0', '菲比斯', '菲比斯');
+INSERT INTO `map` VALUES ('509', '临时哨所', '', '510', '0', '0', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('510', '前沿哨塔', '', '0', '509', '0', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('511', '荒原小径一', '', '512', '0', '0', '0', '临时哨所', '荒原小径');
+INSERT INTO `map` VALUES ('512', '荒原小径二', '', '513', '511', '0', '0', '临时哨所', '荒原小径');
+INSERT INTO `map` VALUES ('513', '荒原小径三', '', '514', '512', '0', '520', '临时哨所', '荒原小径');
+INSERT INTO `map` VALUES ('514', '荒原小径四', '', '515', '513', '0', '0', '临时哨所', '荒原小径');
+INSERT INTO `map` VALUES ('515', '冷雪丘', '', '516', '514', '0', '521', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('516', '荒原大道一', '', '517', '515', '0', '0', '临时哨所', '荒原大道');
+INSERT INTO `map` VALUES ('517', '荒原大道二', '', '518', '516', '0', '0', '临时哨所', '荒原大道');
+INSERT INTO `map` VALUES ('518', '荒原大道三', '', '519', '517', '0', '0', '临时哨所', '荒原大道');
+INSERT INTO `map` VALUES ('519', '荒原大道四', '', '0', '518', '0', '522', '临时哨所', '荒原大道');
+INSERT INTO `map` VALUES ('520', '灌木丛', '', '0', '0', '513', '523', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('521', '冷雪小径一', '', '0', '0', '515', '524', '临时哨所', '冷雪小径');
+INSERT INTO `map` VALUES ('522', '哨卡北门', '', '0', '0', '519', '525', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('523', '狗头山丘', '', '0', '0', '520', '526', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('524', '冷雪小径二', '', '0', '0', '521', '528', '临时哨所', '冷雪小径');
+INSERT INTO `map` VALUES ('525', '哨卡北路一', '', '0', '0', '522', '530', '临时哨所', '哨卡北路');
+INSERT INTO `map` VALUES ('526', '瓦砾地一', '', '527', '0', '523', '532', '临时哨所', '瓦砾地');
+INSERT INTO `map` VALUES ('527', '瓦砾地三', '', '0', '526', '0', '533', '临时哨所', '瓦砾地');
+INSERT INTO `map` VALUES ('528', '冷雪小径三', '', '0', '0', '524', '534', '临时哨所', '冷雪小径');
+INSERT INTO `map` VALUES ('529', '临时兵营', '', '530', '0', '0', '537', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('530', '哨卡北路二', '', '531', '529', '525', '538', '临时哨所', '哨卡北路');
+INSERT INTO `map` VALUES ('531', '马厩', '', '0', '530', '0', '539', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('532', '瓦砾地二', '', '533', '0', '526', '0', '临时哨所', '瓦砾地');
+INSERT INTO `map` VALUES ('533', '瓦砾地四', '', '0', '532', '527', '0', '临时哨所', '瓦砾地');
+INSERT INTO `map` VALUES ('534', '冷雪小径四', '', '535', '0', '528', '0', '临时哨所', '冷雪小径');
+INSERT INTO `map` VALUES ('535', '哨卡西门', '', '536', '534', '0', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('536', '哨卡西路一', '', '537', '535', '0', '541', '临时哨所', '哨卡西路');
+INSERT INTO `map` VALUES ('537', '哨卡西路二', '', '538', '536', '529', '542', '临时哨所', '哨卡西路');
+INSERT INTO `map` VALUES ('538', '蛮族大殿', '', '539', '537', '530', '543', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('539', '哨卡东路', '', '540', '538', '531', '544', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('540', '中央营寨', '', '0', '539', '0', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('541', '青石祭坛', '', '0', '0', '536', '545', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('542', '萨满帐篷', '', '543', '0', '537', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('543', '哨卡南路三', '', '544', '542', '538', '546', '临时哨所', '哨卡南路');
+INSERT INTO `map` VALUES ('544', '俘虏营寨', '', '0', '543', '539', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('545', '鹿血丛林一', '', '0', '0', '541', '548', '临时哨所', '鹿血丛林');
+INSERT INTO `map` VALUES ('546', '哨卡南路二', '', '0', '0', '543', '550', '临时哨所', '哨卡南路');
+INSERT INTO `map` VALUES ('547', '鹿血丛林三', '', '548', '0', '0', '551', '临时哨所', '鹿血丛林');
+INSERT INTO `map` VALUES ('548', '鹿血丛林二', '', '549', '547', '545', '552', '临时哨所', '鹿血丛林');
+INSERT INTO `map` VALUES ('549', '简易小路', '', '550', '548', '0', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('550', '哨卡南路一', '', '0', '549', '546', '553', '临时哨所', '哨卡南路');
+INSERT INTO `map` VALUES ('551', '鹿角丘', '', '552', '0', '547', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('552', '鹿血丛林四', '', '0', '551', '548', '0', '临时哨所', '鹿血丛林');
+INSERT INTO `map` VALUES ('553', '南门废墟', '', '0', '0', '550', '0', '临时哨所', '临时哨所');
+INSERT INTO `map` VALUES ('554', '峭壁石阶一', '', '0', '0', '0', '555', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('555', '峭壁石阶二', '', '556', '0', '554', '0', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('556', '峭壁石阶三', '', '557', '555', '0', '0', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('557', '峭壁石阶四', '', '558', '556', '0', '0', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('558', '峭壁石阶五', '', '0', '557', '0', '560', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('559', '峭壁石阶七', '', '560', '0', '0', '562', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('560', '峭壁石阶六', '', '0', '559', '558', '0', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('561', '峭壁石阶九', '', '562', '0', '0', '564', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('562', '峭壁石阶八', '', '563', '561', '559', '0', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('563', '峭壁石阶十', '', '0', '562', '0', '565', '燃烧之地', '峭壁石阶');
+INSERT INTO `map` VALUES ('564', '灼热岩床一', '', '0', '0', '561', '568', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('565', '灰烬谷一', '', '0', '0', '563', '569', '燃烧之地', '灰烬谷');
+INSERT INTO `map` VALUES ('566', '灼热岩床四', '', '567', '0', '0', '570', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('567', '灼热岩床三', '', '568', '566', '0', '0', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('568', '灼热岩床二', '', '0', '567', '564', '0', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('569', '灰烬谷二', '', '0', '0', '565', '574', '燃烧之地', '灰烬谷');
+INSERT INTO `map` VALUES ('570', '灼热岩床五', '', '0', '0', '566', '575', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('571', '燃烧之地八', '', '572', '0', '0', '576', '燃烧之地', '燃烧之地');
+INSERT INTO `map` VALUES ('572', '燃烧之地七', '', '573', '571', '0', '0', '燃烧之地', '燃烧之地');
+INSERT INTO `map` VALUES ('573', '燃烧之地六', '', '0', '572', '0', '578', '燃烧之地', '燃烧之地');
+INSERT INTO `map` VALUES ('574', '灰烬谷三', '', '0', '0', '569', '579', '燃烧之地', '灰烬谷');
+INSERT INTO `map` VALUES ('575', '灼热岩床六', '', '0', '0', '570', '580', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('576', '燃烧之心一', '', '0', '0', '571', '581', '燃烧之地', '燃烧之心');
+INSERT INTO `map` VALUES ('577', '燃烧之心六', '', '0', '0', '0', '582', '燃烧之地', '燃烧之心');
+INSERT INTO `map` VALUES ('578', '燃烧之地五', '', '0', '0', '573', '583', '燃烧之地', '燃烧之地');
+INSERT INTO `map` VALUES ('579', '灰烬谷四', '', '0', '0', '574', '584', '燃烧之地', '灰烬谷');
+INSERT INTO `map` VALUES ('580', '灼热岩床七', '', '0', '0', '575', '585', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('581', '燃烧之心二', '', '0', '0', '576', '586', '燃烧之地', '燃烧之心');
+INSERT INTO `map` VALUES ('582', '燃烧之心五', '', '0', '0', '577', '587', '燃烧之地', '燃烧之心');
+INSERT INTO `map` VALUES ('583', '燃烧之地四', '', '0', '0', '578', '588', '燃烧之地', '燃烧之地');
+INSERT INTO `map` VALUES ('584', '灰烬谷五', '', '0', '0', '579', '589', '燃烧之地', '灰烬谷');
+INSERT INTO `map` VALUES ('585', '灼热岩床八', '', '0', '0', '580', '590', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('586', '燃烧之心三', '', '587', '0', '581', '0', '燃烧之地', '燃烧之心');
+INSERT INTO `map` VALUES ('587', '燃烧之心四', '', '0', '586', '582', '0', '燃烧之地', '燃烧之心');
+INSERT INTO `map` VALUES ('588', '燃烧之地三', '', '0', '0', '583', '593', '燃烧之地', '燃烧之地');
+INSERT INTO `map` VALUES ('589', '灰烬谷六', '', '0', '0', '584', '594', '燃烧之地', '灰烬谷');
+INSERT INTO `map` VALUES ('590', '灼热岩床九', '', '591', '0', '585', '0', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('591', '灼热岩床十', '', '592', '590', '0', '0', '燃烧之地', '灼热岩床');
+INSERT INTO `map` VALUES ('592', '燃烧之地一', '', '593', '591', '0', '0', '燃烧之地', '燃烧之地');
+INSERT INTO `map` VALUES ('593', '燃烧之地二', '', '0', '592', '588', '0', '燃烧之地', '燃烧之地');
+INSERT INTO `map` VALUES ('594', '灰烬谷七', '', '0', '0', '589', '0', '燃烧之地', '灰烬谷');
+INSERT INTO `map` VALUES ('595', '疯狂之缘五', '', '596', '0', '0', '601', '神力遗迹', '疯狂之缘');
+INSERT INTO `map` VALUES ('596', '末日之洋一', '', '597', '595', '0', '0', '神力遗迹', '末日之洋');
+INSERT INTO `map` VALUES ('597', '末日之洋二', '', '598', '596', '0', '0', '神力遗迹', '末日之洋');
+INSERT INTO `map` VALUES ('598', '末日之洋三', '', '599', '597', '0', '0', '神力遗迹', '末日之洋');
+INSERT INTO `map` VALUES ('599', '末日之洋四', '', '600', '598', '0', '0', '神力遗迹', '末日之洋');
+INSERT INTO `map` VALUES ('600', '末日之洋五', '', '0', '599', '0', '0', '神力遗迹', '末日之洋');
+INSERT INTO `map` VALUES ('601', '疯狂之缘四', '', '0', '0', '595', '607', '神力遗迹', '疯狂之缘');
+INSERT INTO `map` VALUES ('602', '海王城五', '', '603', '0', '0', '608', '神力遗迹', '海王城');
+INSERT INTO `map` VALUES ('603', '海王城四', '', '604', '602', '0', '0', '神力遗迹', '海王城');
+INSERT INTO `map` VALUES ('604', '海王城三', '', '605', '603', '0', '0', '神力遗迹', '海王城');
+INSERT INTO `map` VALUES ('605', '海王城二', '', '606', '604', '0', '0', '神力遗迹', '海王城');
+INSERT INTO `map` VALUES ('606', '海王城一', '', '0', '605', '0', '612', '神力遗迹', '海王城');
+INSERT INTO `map` VALUES ('607', '疯狂之缘三', '', '0', '0', '601', '613', '神力遗迹', '疯狂之缘');
+INSERT INTO `map` VALUES ('608', '珊瑚礁一', '', '0', '0', '602', '614', '神力遗迹', '珊瑚礁');
+INSERT INTO `map` VALUES ('609', '深海之谷一', '', '610', '0', '0', '615', '神力遗迹', '深海之谷');
+INSERT INTO `map` VALUES ('610', '深海之谷二', '', '611', '609', '0', '0', '神力遗迹', '深海之谷');
+INSERT INTO `map` VALUES ('611', '深海之谷三', '', '0', '610', '0', '617', '神力遗迹', '深海之谷');
+INSERT INTO `map` VALUES ('612', '细沙平原五', '', '0', '0', '606', '618', '神力遗迹', '细沙平原');
+INSERT INTO `map` VALUES ('613', '疯狂之缘二', '', '0', '0', '607', '619', '神力遗迹', '疯狂之缘');
+INSERT INTO `map` VALUES ('614', '珊瑚礁二', '', '0', '0', '608', '620', '神力遗迹', '珊瑚礁');
+INSERT INTO `map` VALUES ('615', '神力遗迹', '', '616', '0', '609', '0', '神力遗迹', '神力遗迹');
+INSERT INTO `map` VALUES ('616', '战场废墟', '', '0', '615', '0', '622', '神力遗迹', '神力遗迹');
+INSERT INTO `map` VALUES ('617', '深海之谷四', '', '0', '0', '611', '623', '神力遗迹', '深海之谷');
+INSERT INTO `map` VALUES ('618', '细沙平原四', '', '0', '0', '612', '624', '神力遗迹', '细沙平原');
+INSERT INTO `map` VALUES ('619', '疯狂之缘一', '', '0', '0', '613', '625', '神力遗迹', '疯狂之缘');
+INSERT INTO `map` VALUES ('620', '珊瑚礁三', '', '621', '0', '614', '0', '神力遗迹', '珊瑚礁');
+INSERT INTO `map` VALUES ('621', '珊瑚礁四', '', '622', '620', '0', '0', '神力遗迹', '珊瑚礁');
+INSERT INTO `map` VALUES ('622', '珊瑚礁五', '', '0', '621', '616', '0', '神力遗迹', '珊瑚礁');
+INSERT INTO `map` VALUES ('623', '深海之谷五', '', '0', '0', '617', '629', '神力遗迹', '深海之谷');
+INSERT INTO `map` VALUES ('624', '细沙平原三', '', '0', '0', '618', '630', '神力遗迹', '细沙平原');
+INSERT INTO `map` VALUES ('625', '死亡之海五', '', '626', '0', '619', '0', '神力遗迹', '死亡之海');
+INSERT INTO `map` VALUES ('626', '死亡之海四', '', '627', '625', '0', '0', '神力遗迹', '死亡之海');
+INSERT INTO `map` VALUES ('627', '死亡之海三', '', '628', '626', '0', '0', '神力遗迹', '死亡之海');
+INSERT INTO `map` VALUES ('628', '死亡之海二', '', '629', '627', '0', '0', '神力遗迹', '死亡之海');
+INSERT INTO `map` VALUES ('629', '死亡之海一', '', '0', '628', '623', '0', '神力遗迹', '死亡之海');
+INSERT INTO `map` VALUES ('630', '细沙平原二', '', '0', '0', '624', '636', '神力遗迹', '细沙平原');
+INSERT INTO `map` VALUES ('631', '漩涡之缘一', '', '632', '0', '0', '0', '神力遗迹', '漩涡之缘');
+INSERT INTO `map` VALUES ('632', '漩涡之缘二', '', '633', '631', '0', '0', '神力遗迹', '漩涡之缘');
+INSERT INTO `map` VALUES ('633', '漩涡之缘三', '', '634', '632', '0', '0', '神力遗迹', '漩涡之缘');
+INSERT INTO `map` VALUES ('634', '漩涡之缘四', '', '635', '633', '0', '0', '神力遗迹', '漩涡之缘');
+INSERT INTO `map` VALUES ('635', '漩涡之缘五', '', '636', '634', '0', '0', '神力遗迹', '漩涡之缘');
+INSERT INTO `map` VALUES ('636', '细沙平原一', '', '0', '635', '630', '0', '神力遗迹', '细沙平原');
+
+-- ----------------------------
+-- Table structure for map_monster
+-- ----------------------------
+DROP TABLE IF EXISTS `map_monster`;
+CREATE TABLE `map_monster` (
+  `map_monster_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `map_id` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT '地图ID',
+  `monster_id` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT 'monster表主键',
+  `monster_name` varchar(16) NOT NULL DEFAULT '' COMMENT '怪物名称',
+  `grade` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '怪物等级',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '存活状态：0死亡;1存活',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '怪物类型：0普通怪；1精怪；2金怪',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `date_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '偷取宝箱日期',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='好友宝箱偷取记录';
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`map_monster_id`),
+  KEY `map_id` (`map_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COMMENT='地图怪物';
 
-CREATE TABLE `maintain_config` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `version` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '版本号',
-  `title` varchar(20) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '标题',
-  `content` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '内容',
-  `start_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '开始时间',
-  `end_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '结束时间',
-  `online_status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '上线状态',
-  `ip_white_list` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'IP白名单',
+-- ----------------------------
+-- Records of map_monster
+-- ----------------------------
+INSERT INTO `map_monster` VALUES ('1', '545', '1', '暗黑猎人', '10', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('2', '545', '1', '暗黑猎人', '9', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('3', '545', '1', '暗黑猎人', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('4', '545', '1', '暗黑猎人', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('5', '545', '1', '暗黑猎人', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('6', '545', '7', '忿怨幽灵', '9', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('7', '545', '3', '利刃精灵', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('8', '545', '3', '利刃精灵', '4', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('9', '545', '3', '利刃精灵', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('10', '545', '3', '利刃精灵', '2', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('11', '545', '3', '利刃精灵', '10', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('12', '545', '6', '恶魔之子', '10', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('13', '103', '1', '暗黑猎人', '1', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('14', '103', '1', '暗黑猎人', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('15', '103', '1', '暗黑猎人', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('16', '103', '1', '暗黑猎人', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('17', '103', '1', '暗黑猎人', '2', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('18', '103', '2', '利刃杀手', '9', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('19', '103', '2', '利刃杀手', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('20', '103', '2', '利刃杀手', '2', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('21', '103', '2', '利刃杀手', '1', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('22', '103', '2', '利刃杀手', '6', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('23', '103', '5', '骷髅', '6', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('24', '103', '5', '骷髅', '5', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('25', '103', '5', '骷髅', '6', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('26', '103', '5', '骷髅', '5', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('27', '103', '5', '骷髅', '1', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('28', '547', '1', '暗黑猎人', '5', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('29', '547', '2', '利刃杀手', '6', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('30', '547', '2', '利刃杀手', '8', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('31', '91', '3', '利刃精灵', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('32', '91', '6', '恶魔之子', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('33', '91', '6', '恶魔之子', '1', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('34', '175', '2', '利刃杀手', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('35', '175', '2', '利刃杀手', '10', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('36', '175', '2', '利刃杀手', '1', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('37', '175', '6', '恶魔之子', '9', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('38', '175', '6', '恶魔之子', '2', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('39', '175', '6', '恶魔之子', '8', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('40', '175', '6', '恶魔之子', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('41', '175', '6', '恶魔之子', '1', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('42', '175', '6', '恶魔之子', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('43', '175', '6', '恶魔之子', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('44', '175', '6', '恶魔之子', '9', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('45', '175', '6', '恶魔之子', '5', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('46', '175', '6', '恶魔之子', '6', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('47', '78', '1', '暗黑猎人', '5', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('48', '78', '1', '暗黑猎人', '8', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('49', '78', '1', '暗黑猎人', '7', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('50', '78', '1', '暗黑猎人', '1', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('51', '78', '1', '暗黑猎人', '4', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('52', '78', '1', '暗黑猎人', '8', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('53', '78', '1', '暗黑猎人', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('54', '78', '1', '暗黑猎人', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('55', '78', '1', '暗黑猎人', '1', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('56', '78', '1', '暗黑猎人', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('57', '78', '5', '骷髅', '5', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('58', '78', '5', '骷髅', '10', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('59', '78', '5', '骷髅', '10', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('60', '78', '5', '骷髅', '9', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('61', '78', '5', '骷髅', '6', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('62', '78', '5', '骷髅', '2', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('63', '78', '5', '骷髅', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('64', '78', '5', '骷髅', '8', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('65', '78', '5', '骷髅', '3', '1', '0', '1627633537', '1627633537');
+INSERT INTO `map_monster` VALUES ('66', '78', '5', '骷髅', '10', '1', '0', '1627633537', '1627633537');
+
+-- ----------------------------
+-- Table structure for map_monster_config
+-- ----------------------------
+DROP TABLE IF EXISTS `map_monster_config`;
+CREATE TABLE `map_monster_config` (
+  `config_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `map_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '地图ID',
+  `monster_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'monster表主键',
+  `quantity` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '怪物数量',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`config_id`),
+  KEY `map_id` (`map_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of map_monster_config
+-- ----------------------------
+INSERT INTO `map_monster_config` VALUES ('13', '545', '1', '5', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('14', '545', '7', '1', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('15', '545', '3', '5', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('16', '545', '6', '1', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('17', '103', '1', '5', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('18', '103', '2', '5', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('19', '103', '5', '5', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('20', '547', '1', '1', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('21', '547', '2', '2', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('22', '91', '3', '1', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('23', '91', '6', '2', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('24', '175', '2', '3', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('25', '175', '6', '10', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('26', '78', '1', '10', '0', '0');
+INSERT INTO `map_monster_config` VALUES ('27', '78', '5', '10', '0', '0');
+
+-- ----------------------------
+-- Table structure for monster
+-- ----------------------------
+DROP TABLE IF EXISTS `monster`;
+CREATE TABLE `monster` (
+  `monster_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `monster_name` varchar(16) NOT NULL DEFAULT '' COMMENT '怪物名称',
+  `min_grade` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最小怪物等级',
+  `max_grade` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最大怪物等级',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`monster_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='全服怪物配置';
+
+-- ----------------------------
+-- Records of monster
+-- ----------------------------
+INSERT INTO `monster` VALUES ('1', '暗黑猎人', '1', '10', '0', '0');
+INSERT INTO `monster` VALUES ('2', '利刃杀手', '1', '10', '0', '0');
+INSERT INTO `monster` VALUES ('3', '利刃精灵', '1', '10', '0', '0');
+INSERT INTO `monster` VALUES ('4', '嗜血猎人', '1', '10', '0', '0');
+INSERT INTO `monster` VALUES ('5', '骷髅', '1', '10', '0', '0');
+INSERT INTO `monster` VALUES ('6', '恶魔之子', '1', '10', '0', '0');
+INSERT INTO `monster` VALUES ('7', '忿怨幽灵', '1', '10', '0', '0');
+
+-- ----------------------------
+-- Table structure for npc
+-- ----------------------------
+DROP TABLE IF EXISTS `npc`;
+CREATE TABLE `npc` (
+  `npc_id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `map_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '地图ID',
+  `npc_name` varchar(16) NOT NULL DEFAULT '' COMMENT 'NPC名称',
+  PRIMARY KEY (`npc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='NPC';
+
+-- ----------------------------
+-- Records of npc
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for server
+-- ----------------------------
+DROP TABLE IF EXISTS `server`;
+CREATE TABLE `server` (
+  `server_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `server_name` varchar(16) NOT NULL DEFAULT '' COMMENT '服务器名',
+  `start_time` int(10) NOT NULL DEFAULT '0' COMMENT '开服时间',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='维护配置表';
+  PRIMARY KEY (`server_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='服务器分区表';
 
+-- ----------------------------
+-- Records of server
+-- ----------------------------
+INSERT INTO `server` VALUES ('1', '体验服', '0', '0', '0');
+
+-- ----------------------------
+-- Table structure for sys_admin
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_admin`;
 CREATE TABLE `sys_admin` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
   `username` varchar(100) NOT NULL,
@@ -302,8 +905,36 @@ CREATE TABLE `sys_admin` (
   `login_times` smallint(5) unsigned DEFAULT '0',
   `last_login_ip` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='后台管理员';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='后台管理员';
 
+-- ----------------------------
+-- Records of sys_admin
+-- ----------------------------
+INSERT INTO `sys_admin` VALUES ('1', 'admin', '###8579b85cdd5bb959cb16d8cd2693efd7', '1', '1', '1563532079', '1627613524', '341', '192.168.9.238');
+INSERT INTO `sys_admin` VALUES ('2', 'manage', '###12b7010f20f4a8912187563080d1f96b', '1', '2', '1563781092', '1618905372', '8', '113.67.73.157');
+
+-- ----------------------------
+-- Table structure for sys_admin_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_admin_log`;
+CREATE TABLE `sys_admin_log` (
+  `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID',
+  `desc` text COMMENT '操作详情',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `ip` varchar(16) NOT NULL DEFAULT '' COMMENT 'IP地址',
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='后台管理员';
+
+-- ----------------------------
+-- Records of sys_admin_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_menu_node
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu_node`;
 CREATE TABLE `sys_menu_node` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL COMMENT '权限英文名称',
@@ -320,8 +951,42 @@ CREATE TABLE `sys_menu_node` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `path` (`app`,`controller`,`action`) USING BTREE,
   KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='权限节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='权限节点表';
 
+-- ----------------------------
+-- Records of sys_menu_node
+-- ----------------------------
+INSERT INTO `sys_menu_node` VALUES ('1', '管理员管理', '10', '0', '0', '1', 'admin', 'admin', 'default', '&#xe726;', '', null);
+INSERT INTO `sys_menu_node` VALUES ('3', '管理员列表', '10000', '1', '1', '1', 'admin', 'admin', 'index', '', '', null);
+INSERT INTO `sys_menu_node` VALUES ('4', '添加管理员', '10000', '2', '3', '0', 'admin', 'admin', 'add', '', '', null);
+INSERT INTO `sys_menu_node` VALUES ('5', '提交添加', '9000', '2', '3', '0', 'admin', 'admin', 'addPost', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('6', '角色管理', '10000', '1', '1', '1', 'admin', 'role', 'index', '', '', null);
+INSERT INTO `sys_menu_node` VALUES ('7', '添加角色', '10000', '2', '6', '0', 'admin', 'role', 'add', '', '', null);
+INSERT INTO `sys_menu_node` VALUES ('9', '编辑个人信息', '10000', '1', '83', '0', 'admin', 'admin', 'edit', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('10', '提交编辑', '10000', '1', '83', '0', 'admin', 'admin', 'editPost', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('11', '删除管理员', '10000', '2', '3', '0', 'admin', 'admin', 'delete', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('12', '提交添加', '10000', '2', '6', '0', 'admin', 'role', 'addPost', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('13', '编辑角色', '10000', '2', '6', '0', 'admin', 'role', 'edit', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('14', '提交编辑', '10000', '2', '6', '0', 'admin', 'role', 'editPost', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('15', '删除角色', '10000', '2', '6', '0', 'admin', 'role', 'delete', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('16', '启用/禁用', '10000', '2', '3', '0', 'admin', 'admin', 'enabling', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('17', '启用/禁用', '10000', '2', '6', '0', 'admin', 'role', 'enabling', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('18', '节点菜单管理', '10000', '1', '1', '1', 'admin', 'Node', 'index', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('19', '添加节点', '10000', '2', '18', '0', 'admin', 'Node', 'add', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('20', '提交添加', '10000', '2', '18', '0', 'admin', 'Node', 'addPost', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('21', '编辑节点', '10000', '2', '18', '0', 'admin', 'Node', 'edit', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('22', '提交编辑', '10000', '2', '18', '0', 'admin', 'Node', 'editPost', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('23', '删除节点', '10000', '2', '18', '0', 'admin', 'Node', 'delete', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('24', '显示/隐藏', '10000', '2', '18', '0', 'admin', 'Node', 'enabling', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('25', '修改排序', '10000', '2', '18', '0', 'admin', 'Node', 'changeSort', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('170', '地图管理', '10000', '0', '0', '1', 'admin', 'map', 'default', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('171', '地图列表', '10000', '1', '170', '1', 'admin', 'map', 'index', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('172', '怪物配置', '10000', '1', '170', '1', 'admin', 'map', 'monster', '', '', '');
+
+-- ----------------------------
+-- Table structure for sys_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '状态;0:禁用;1:正常',
@@ -331,8 +996,18 @@ CREATE TABLE `sys_role` (
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='角色表';
 
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES ('1', '1', '1563760232', '0', '超级管理员', '拥有整个系统的权限');
+INSERT INTO `sys_role` VALUES ('2', '1', '1563849778', '0', '管理员', '普通管理员');
+
+-- ----------------------------
+-- Table structure for sys_role_node
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_node`;
 CREATE TABLE `sys_role_node` (
   `role_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '角色 id',
   `node_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '节点id',
@@ -340,883 +1015,159 @@ CREATE TABLE `sys_role_node` (
   KEY `node_id` (`node_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色权限表';
 
-CREATE TABLE `task_daily` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL COMMENT '名称(中文)',
-  `title` varchar(10) NOT NULL COMMENT '标识',
-  `type` tinyint(1) unsigned NOT NULL COMMENT '类型，1-常驻任务，2-轮换任务',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='每日任务表';
+-- ----------------------------
+-- Records of sys_role_node
+-- ----------------------------
+INSERT INTO `sys_role_node` VALUES ('3', '48');
+INSERT INTO `sys_role_node` VALUES ('3', '49');
+INSERT INTO `sys_role_node` VALUES ('3', '71');
+INSERT INTO `sys_role_node` VALUES ('3', '78');
+INSERT INTO `sys_role_node` VALUES ('3', '79');
+INSERT INTO `sys_role_node` VALUES ('4', '35');
+INSERT INTO `sys_role_node` VALUES ('4', '36');
+INSERT INTO `sys_role_node` VALUES ('4', '37');
+INSERT INTO `sys_role_node` VALUES ('4', '38');
+INSERT INTO `sys_role_node` VALUES ('4', '39');
+INSERT INTO `sys_role_node` VALUES ('4', '40');
+INSERT INTO `sys_role_node` VALUES ('4', '41');
+INSERT INTO `sys_role_node` VALUES ('4', '42');
+INSERT INTO `sys_role_node` VALUES ('4', '43');
+INSERT INTO `sys_role_node` VALUES ('4', '44');
+INSERT INTO `sys_role_node` VALUES ('4', '45');
+INSERT INTO `sys_role_node` VALUES ('4', '46');
+INSERT INTO `sys_role_node` VALUES ('4', '47');
+INSERT INTO `sys_role_node` VALUES ('4', '61');
+INSERT INTO `sys_role_node` VALUES ('4', '62');
+INSERT INTO `sys_role_node` VALUES ('2', '48');
+INSERT INTO `sys_role_node` VALUES ('2', '49');
+INSERT INTO `sys_role_node` VALUES ('2', '54');
+INSERT INTO `sys_role_node` VALUES ('2', '104');
+INSERT INTO `sys_role_node` VALUES ('2', '115');
+INSERT INTO `sys_role_node` VALUES ('2', '116');
+INSERT INTO `sys_role_node` VALUES ('2', '117');
+INSERT INTO `sys_role_node` VALUES ('2', '118');
+INSERT INTO `sys_role_node` VALUES ('2', '119');
+INSERT INTO `sys_role_node` VALUES ('2', '120');
+INSERT INTO `sys_role_node` VALUES ('2', '121');
+INSERT INTO `sys_role_node` VALUES ('2', '105');
+INSERT INTO `sys_role_node` VALUES ('2', '146');
+INSERT INTO `sys_role_node` VALUES ('2', '107');
+INSERT INTO `sys_role_node` VALUES ('2', '122');
+INSERT INTO `sys_role_node` VALUES ('2', '123');
+INSERT INTO `sys_role_node` VALUES ('2', '106');
+INSERT INTO `sys_role_node` VALUES ('2', '108');
+INSERT INTO `sys_role_node` VALUES ('2', '109');
+INSERT INTO `sys_role_node` VALUES ('2', '110');
+INSERT INTO `sys_role_node` VALUES ('2', '111');
+INSERT INTO `sys_role_node` VALUES ('2', '35');
+INSERT INTO `sys_role_node` VALUES ('2', '36');
+INSERT INTO `sys_role_node` VALUES ('2', '37');
+INSERT INTO `sys_role_node` VALUES ('2', '38');
+INSERT INTO `sys_role_node` VALUES ('2', '39');
+INSERT INTO `sys_role_node` VALUES ('2', '40');
+INSERT INTO `sys_role_node` VALUES ('2', '41');
+INSERT INTO `sys_role_node` VALUES ('2', '84');
+INSERT INTO `sys_role_node` VALUES ('2', '42');
+INSERT INTO `sys_role_node` VALUES ('2', '43');
+INSERT INTO `sys_role_node` VALUES ('2', '44');
+INSERT INTO `sys_role_node` VALUES ('2', '45');
+INSERT INTO `sys_role_node` VALUES ('2', '46');
+INSERT INTO `sys_role_node` VALUES ('2', '47');
+INSERT INTO `sys_role_node` VALUES ('2', '61');
+INSERT INTO `sys_role_node` VALUES ('2', '62');
+INSERT INTO `sys_role_node` VALUES ('2', '85');
+INSERT INTO `sys_role_node` VALUES ('2', '63');
+INSERT INTO `sys_role_node` VALUES ('2', '64');
+INSERT INTO `sys_role_node` VALUES ('2', '66');
+INSERT INTO `sys_role_node` VALUES ('2', '67');
+INSERT INTO `sys_role_node` VALUES ('2', '68');
+INSERT INTO `sys_role_node` VALUES ('2', '69');
+INSERT INTO `sys_role_node` VALUES ('2', '70');
+INSERT INTO `sys_role_node` VALUES ('2', '65');
+INSERT INTO `sys_role_node` VALUES ('2', '86');
+INSERT INTO `sys_role_node` VALUES ('2', '87');
+INSERT INTO `sys_role_node` VALUES ('2', '90');
+INSERT INTO `sys_role_node` VALUES ('2', '91');
+INSERT INTO `sys_role_node` VALUES ('2', '88');
+INSERT INTO `sys_role_node` VALUES ('2', '89');
+INSERT INTO `sys_role_node` VALUES ('2', '132');
+INSERT INTO `sys_role_node` VALUES ('2', '133');
+INSERT INTO `sys_role_node` VALUES ('2', '134');
+INSERT INTO `sys_role_node` VALUES ('2', '135');
+INSERT INTO `sys_role_node` VALUES ('2', '92');
+INSERT INTO `sys_role_node` VALUES ('2', '93');
+INSERT INTO `sys_role_node` VALUES ('2', '94');
+INSERT INTO `sys_role_node` VALUES ('2', '95');
+INSERT INTO `sys_role_node` VALUES ('2', '96');
+INSERT INTO `sys_role_node` VALUES ('2', '97');
+INSERT INTO `sys_role_node` VALUES ('2', '98');
+INSERT INTO `sys_role_node` VALUES ('2', '99');
 
-CREATE TABLE `task_daily_record` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL COMMENT '用户id',
-  `task_title` varchar(10) NOT NULL COMMENT '每日任务的标识',
-  `create_time` int(10) unsigned NOT NULL COMMENT '创建(完成)时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='每日任务用户完成表';
-
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '用户状态;0:禁用,1:正常',
+  `server_id` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '服务器',
+  `openid` varchar(64) NOT NULL DEFAULT '' COMMENT 'openId',
   `nickname` varchar(16) NOT NULL DEFAULT '' COMMENT '用户昵称',
   `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '用户头像',
-  `channel_id` varchar(32) NOT NULL DEFAULT '' COMMENT '来源渠道',
-  `appid` varchar(64) NOT NULL DEFAULT '' COMMENT '来源appid',
-  `openid` varchar(64) NOT NULL DEFAULT '' COMMENT '第三方用户id',
-  `device_num` varchar(124) NOT NULL DEFAULT '' COMMENT '设备号',
-  `last_login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录ip',
+  `login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录ip',
   `last_login_time` int(11) NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-  `login_times` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录次数',
-  `last_ws_login_time` int(11) NOT NULL DEFAULT '0' COMMENT 'websocket最后登录时间',
-  `more` varchar(255) NOT NULL DEFAULT '' COMMENT '授权信息',
   `sex` tinyint(2) NOT NULL DEFAULT '0' COMMENT '性别;0:保密,1:男,2:女',
   `city` varchar(32) NOT NULL DEFAULT '' COMMENT '城市',
   `province` varchar(32) NOT NULL DEFAULT '' COMMENT '省份',
   `country` varchar(32) NOT NULL DEFAULT '' COMMENT '国家',
   `ip_region` varchar(32) NOT NULL DEFAULT '' COMMENT '地区',
-  `is_robot` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否是机器人',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '注册时间',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `openid` (`openid`) USING BTREE,
   KEY `nickname` (`nickname`) USING BTREE,
   KEY `create_time` (`create_time`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1121 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
-CREATE TABLE `user_certify` (
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('1', '1', 'ojNKd5QDBMWAXdws5VbzhapLviqY', '', '', '', '0', '0', '', '', '', '', '1627028196', '1627900159');
+
+-- ----------------------------
+-- Table structure for user_game_data
+-- ----------------------------
+DROP TABLE IF EXISTS `user_game_data`;
+CREATE TABLE `user_game_data` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `username` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
-  `password` varchar(255) NOT NULL DEFAULT '' COMMENT '登录密码',
-  `email` varchar(32) NOT NULL DEFAULT '' COMMENT '邮箱',
-  `realname` varchar(64) NOT NULL DEFAULT '' COMMENT '真实姓名',
-  `idcard_num` varchar(255) NOT NULL DEFAULT '' COMMENT '身份证号',
-  `device_num` varchar(124) NOT NULL DEFAULT '' COMMENT '设备号',
-  `last_login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录ip',
-  `last_login_time` int(11) NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '注册时间',
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
-
-CREATE TABLE `user_character` (
-  `character_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `character_type` int(11) NOT NULL DEFAULT '0' COMMENT '角色所属 1:斩魂；2影舞；3猎魔',
-  `level` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '当前等级',
-  `exp` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '经验值',
-  `character_plot` varchar(1024) NOT NULL DEFAULT '' COMMENT '角色剧情',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `power` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色战力',
-  PRIMARY KEY (`character_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=374 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
-
-
-
-CREATE TABLE `user_character_change_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `old_character` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `new_character` int(11) NOT NULL DEFAULT '0' COMMENT '新值',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='转职日志';
-
-CREATE TABLE `user_character_data` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `money` varchar(64) NOT NULL DEFAULT '0' COMMENT '金钱',
-  `diamond` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '钻石',
-  `crystal` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '精灵结晶',
-  `soul` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '魂石',
-  `forg` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '洗练石',
-  `max_food_level` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT '当前合成食物最大等级',
-  `max_level` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '当前最高等级',
-  `max_pass_normal` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '普通模式通关最高级别',
-  `max_pass_hard` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '深渊模式通关最高级别',
-  `challenge_hard_count` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '剩余挑战深渊模式次数',
-  `sweep_hard_count` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '剩余扫荡深渊模式次数',
-  `reset_hard_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '深渊模式重置时间',
-  `total_skill_point` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '技能点总数',
-  `use_skill_point` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '已用技能点',
-  `curr_character` int(11) unsigned NOT NULL DEFAULT '1' COMMENT '出战角色  1:斩魂；2影舞；3猎魔',
-  `open_story` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '开场剧情：0:没走完开场剧情 1：已过',
-  `character_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
-  `offline_minute` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '离线时间：分钟',
-  `power` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '当前角色战力',
-  `total_power` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总战力',
+  `map_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '当前所处地图ID',
+  `money` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '金钱',
+  `m_money` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '魔金',
   `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1125 DEFAULT CHARSET=utf8mb4 COMMENT='用户游戏数据';
+  PRIMARY KEY (`user_id`),
+  KEY `map_id` (`map_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户游戏数据表';
 
-CREATE TABLE `user_character_equip` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `is_unlock` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否解锁',
-  `character_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
-  `slot` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '插槽 1001:武器',
-  `foreign_key` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '外键：物品的主ID',
-  `level` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '星级,段',
-  `star` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '星级,段',
-  `extra` varchar(1024) NOT NULL DEFAULT '' COMMENT '额外属性',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=364 DEFAULT CHARSET=utf8mb4 COMMENT='创建人物身上的道具';
+-- ----------------------------
+-- Records of user_game_data
+-- ----------------------------
+INSERT INTO `user_game_data` VALUES ('1', '78', '0', '0', '0', '1627895820');
 
-CREATE TABLE `user_character_equip_log` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `character_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '1升星 2升级',
-  `old_level` int(10) NOT NULL DEFAULT '0' COMMENT '原等级',
-  `new_level` int(10) NOT NULL DEFAULT '0' COMMENT '新等级',
-  `old_star` int(10) NOT NULL DEFAULT '0' COMMENT '原星级',
-  `new_star` int(10) NOT NULL DEFAULT '0' COMMENT '新星级',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=373 DEFAULT CHARSET=utf8mb4 COMMENT='武器强化日志';
-
-CREATE TABLE `user_character_package` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `slot` int(11) NOT NULL DEFAULT '0' COMMENT '插槽 1-15',
-  `slot_value` int(11) NOT NULL DEFAULT '0' COMMENT '插槽值 目前是食物ID',
-  `type` int(11) NOT NULL DEFAULT '1' COMMENT '类型 0：无；1：食物',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1906 DEFAULT CHARSET=utf8mb4 COMMENT='人物背包表';
-
-CREATE TABLE `user_character_skill` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `character_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色ID',
-  `skill_1` int(11) NOT NULL DEFAULT '0' COMMENT '技能1',
-  `skill_2` int(11) NOT NULL DEFAULT '0' COMMENT '技能2',
-  `skill_3` int(11) NOT NULL DEFAULT '0' COMMENT '技能3',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=364 DEFAULT CHARSET=utf8mb4 COMMENT='角色技能表';
-
-CREATE TABLE `user_crystal_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型：-1消耗;1获得',
-  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '值',
-  `origin_value` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `after_value` varchar(64) NOT NULL DEFAULT '0' COMMENT '新值',
-  `extra_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='精灵结晶';
-
-CREATE TABLE `user_diamond_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型：-1消耗;1获得',
-  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '值',
-  `origin_value` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `after_value` varchar(64) NOT NULL DEFAULT '0' COMMENT '新值',
-  `extra_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='钻石';
-
-CREATE TABLE `user_economy_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `economy_type` int(11) NOT NULL DEFAULT '0' COMMENT '1金钱;2钻石;3精灵结晶;4魂石;5洗练石',
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '类型：1获得,0消费',
-  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '值',
-  `origin_value` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `after_value` varchar(64) NOT NULL DEFAULT '0' COMMENT '新值',
-  `extra_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='经济日志';
-
-CREATE TABLE `user_elve` (
-  `user_elve_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `elve_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '精灵ID',
-  `level` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '等级',
-  `star` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '星级',
-  `is_destroy` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已经销毁：0否 1是',
-  `is_enable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否出战',
-  `quality` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '品质',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `consume_soul` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消费魂石',
-  `consume_forg` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '消费洗练石',
-  PRIMARY KEY (`user_elve_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8070 DEFAULT CHARSET=utf8mb4 COMMENT='用户精灵';
-
-CREATE TABLE `user_elve_attr` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_elve_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户精灵ID',
-  `attr_id` varchar(8) NOT NULL DEFAULT '0' COMMENT '精灵属性ID',
-  `attr_value` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '精灵属性值',
-  `curr_attr_value` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '当前阶段洗练属性值',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16139 DEFAULT CHARSET=utf8mb4 COMMENT='用户精灵属性';
-
-CREATE TABLE `user_elve_shard` (
-  `shard_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `elve_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '精灵ID',
-  `quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '数量',
-  `quality` tinyint(1) NOT NULL DEFAULT '0' COMMENT '质量',
-  `prop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '道具ID',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`shard_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='用户精灵碎片';
-
-CREATE TABLE `user_elve_shard_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型：-1消耗;1获得',
-  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '值',
-  `origin_value` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `after_value` varchar(64) NOT NULL DEFAULT '0' COMMENT '新值',
-  `extra_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COMMENT='精灵碎片日志';
-
-CREATE TABLE `user_email` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '类型 1单个玩家邮件 2全服玩家邮件',
-  `user_id` int(10) NOT NULL COMMENT '用户ID',
-  `title` varchar(50) NOT NULL COMMENT '标题',
-  `call` varchar(50) NOT NULL COMMENT '称呼',
-  `content` text NOT NULL COMMENT '内容',
-  `sign` varchar(50) NOT NULL COMMENT '落款',
-  `annex` varchar(255) NOT NULL COMMENT '附件内容(json数据)',
-  `annex_status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '附件状态 0未提取 1已提取',
-  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '邮件状态 0未读 1已读',
-  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='用户邮件表';
-
-CREATE TABLE `user_food_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型：1购买 2合成 3消耗',
-  `food_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='经济日志';
-
-CREATE TABLE `user_forg_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型：-1消耗;1获得',
-  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '值',
-  `origin_value` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `after_value` varchar(64) NOT NULL DEFAULT '0' COMMENT '新值',
-  `extra_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='洗练石';
-
-CREATE TABLE `user_login_log` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
-  `is_new` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否为新用户  1是   0不是',
-  `login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COMMENT='用户登录日志表';
-
-CREATE TABLE `user_luckdraw_batch_log` (
-  `batch_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '抽奖类型:1单次;10十连抽',
-  `money` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '消耗钻石',
-  `is_free` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否使用免费名额',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`batch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COMMENT='用户卡池抽奖记录';
-
-CREATE TABLE `user_luckdraw_prop_log` (
-  `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `batch_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'user_luckdraw_batch_log主键',
-  `prop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '道具ID',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户卡池抽奖具体道具表';
-
-CREATE TABLE `user_money_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型：-1购买食材 -2强化武器',
-  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '值',
-  `origin_value` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `extra_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COMMENT='经济日志';
-
-CREATE TABLE `user_online_log` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` int(10) NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `login_time` int(11) NOT NULL DEFAULT '0' COMMENT '上线时间',
-  `logout_time` int(11) NOT NULL DEFAULT '0' COMMENT '下线时间',
-  `online_time` int(11) NOT NULL DEFAULT '0' COMMENT '在线时长',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  PRIMARY KEY (`id`),
-  KEY `online_time` (`online_time`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=331 DEFAULT CHARSET=utf8mb4 COMMENT='用户在线时长记录表';
-
-CREATE TABLE `user_pass_hard` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '通关关卡 记录最高',
-  `team_user_id_1` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_2` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_3` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户深渊模式通关表';
-
-CREATE TABLE `user_pass_normal` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `level` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '通关关卡 记录最高',
-  `team_user_id_1` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_2` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_3` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户普通模式通关表';
-
-CREATE TABLE `user_pass_normal_log` (
-  `log_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+-- ----------------------------
+-- Table structure for user_pendant
+-- ----------------------------
+DROP TABLE IF EXISTS `user_pendant`;
+CREATE TABLE `user_pendant` (
+  `pendant_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `level_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '关卡ID',
-  `team_user_id_1` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_2` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_3` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='通关日志';
-
-CREATE TABLE `user_recharge_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `money` int(10) NOT NULL DEFAULT '0' COMMENT '充值金额',
-  `create_month` varchar(64) NOT NULL DEFAULT '' COMMENT '充值月份',
-  `create_day` varchar(64) NOT NULL DEFAULT '' COMMENT '充值日期',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '充值时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='经济日志';
-
-CREATE TABLE `user_sign` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL COMMENT '用户id',
-  `sign_time` int(10) unsigned NOT NULL COMMENT '签到时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户签到表';
-
-CREATE TABLE `user_skill_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型：-1消耗;1获得',
-  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '值',
-  `origin_value` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `after_value` varchar(64) NOT NULL DEFAULT '0' COMMENT '新值',
-  `extra_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COMMENT='技能点';
-
-CREATE TABLE `user_soul_log` (
-  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型：-1消耗;1获得',
-  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '值',
-  `origin_value` varchar(64) NOT NULL DEFAULT '' COMMENT '原值',
-  `after_value` varchar(64) NOT NULL DEFAULT '0' COMMENT '新值',
-  `extra_id` int(11) NOT NULL DEFAULT '0' COMMENT '其他表的主键',
-  `desc` varchar(64) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COMMENT='魂石';
-
-CREATE TABLE `user_sq` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `sq_id` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '神器ID',
-  `level` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '等级',
-  `is_unlock` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否解锁',
-  `is_enable` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否装备',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id,sq_id` (`user_id`,`sq_id`) USING BTREE,
-  KEY `user_id` (`user_id`),
-  KEY `sq_id` (`sq_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='创建人物身上的神器';
-
-CREATE TABLE `user_sq_attr` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` int(10) NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `sq_id` int(10) NOT NULL DEFAULT '0' COMMENT '神器ID',
-  `attr_id` varchar(8) NOT NULL DEFAULT '0' COMMENT '属性ID',
-  `attr_value` float(10,2) NOT NULL DEFAULT '0.00' COMMENT '属性值',
-  `curr_attr_value` float(10,2) NOT NULL DEFAULT '0.00' COMMENT '当前阶段洗练属性值',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `sq_id` (`sq_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户神器属性';
-
-CREATE TABLE `user_wing` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `foreign_key` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '外键：物品的主ID',
-  `is_unlock` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否解锁',
-  `is_enable` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '是否启用',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='创建人物身上的翅膀';
-
-CREATE TABLE `worker_client_id` (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `client_id` varchar(64) NOT NULL DEFAULT '' COMMENT 'client_id',
-  `user_id` int(10) NOT NULL DEFAULT '0' COMMENT 'user_id',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=303 DEFAULT CHARSET=utf8mb4 COMMENT='client_id对应user_id';
-
-CREATE TABLE `user_recharge_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
-  `money` int(10) NOT NULL DEFAULT '0' COMMENT '充值金额',
-  `create_month` varchar(64) NOT NULL DEFAULT '' COMMENT '充值月份',
-  `create_day` varchar(64) NOT NULL DEFAULT '' COMMENT '充值日期',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '充值时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='经济日志';
-
-CREATE TABLE `common_monster` (
-  `monster_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `alias` char(6) NOT NULL DEFAULT '' COMMENT '怪物别名',
-  `name` varchar(16) NOT NULL DEFAULT '' COMMENT '怪物名称',
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '怪物类型:1=小怪;2=BOSS;3=特殊怪',
-  `grade` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '怪物等级',
-  `con` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '生命',
-  `def` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '攻击',
-  `atk` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '防御',
-  `agi` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '攻速',
-  `crit` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '暴击',
-  `resi` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '韧性',
-  `skill` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '技能',
-  `launch` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '技能发动概率',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`monster_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COMMENT='怪物配置';
-
-CREATE TABLE `common_monster_group` (
-  `group_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `alias` varchar(16) NOT NULL DEFAULT '' COMMENT '组合别名',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COMMENT='怪物组合';
-
-CREATE TABLE `common_monster_group_sub` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `monster_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'common_monster表主键',
-  `position` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '位置：0,1,2,3,4,5,6',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `group_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'common_monster_group主键',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8mb4 COMMENT='怪物组合配置';
-
-CREATE TABLE `quest_map` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `map_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '坐标地址',
-  `module` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '地图块：1,2,3,4,5,6,7,8',
-  `event` tinyint(1) NOT NULL DEFAULT '0' COMMENT '事件ID：0无事件;-1出生点;1城镇;2恶灵;3宝箱;4宝箱怪;5boss',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `coord` (`map_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COMMENT='冒险模式坐标地图';
-
-CREATE TABLE `quest_map_config` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `quest_id` varchar(20) NOT NULL,
-  `quest_grade` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '世界等级',
-  `energy_limit` int(10) NOT NULL DEFAULT '0' COMMENT '体力上限',
-  `events_limit` int(10) NOT NULL DEFAULT '0' COMMENT '事件上限',
-  `events_range` varchar(100) NOT NULL COMMENT '事件数量区间',
-  `area_1_monster` varchar(120) NOT NULL DEFAULT '' COMMENT '区域1怪物配置',
-  `area_2_monster` varchar(120) NOT NULL DEFAULT '' COMMENT '区域2怪物配置',
-  `area_3_monster` varchar(120) NOT NULL DEFAULT '' COMMENT '区域3怪物配置',
-  `area_4_monster` varchar(120) NOT NULL DEFAULT '' COMMENT '区域4怪物配置',
-  `boss_point_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Boss位置',
-  `boss_monster` varchar(120) NOT NULL DEFAULT '' COMMENT 'Boss怪物配置',
-  `boss_monster_lv` int(10) NOT NULL DEFAULT '0' COMMENT 'boss怪物等级',
-  `box_monster` varchar(120) NOT NULL DEFAULT '' COMMENT '宝箱怪物配置',
-  `monster_reward` varchar(120) DEFAULT NULL COMMENT '恶灵击杀奖励',
-  `boss_reward` varchar(120) DEFAULT NULL COMMENT 'BOSS击杀奖励',
-  `box_monster_reward` varchar(120) DEFAULT NULL COMMENT '宝箱怪奖励',
-  `box_h_reward` varchar(120) DEFAULT NULL COMMENT '高级宝箱奖励',
-  `box_m_reward` varchar(120) DEFAULT NULL COMMENT '中级宝箱奖励',
-  `box_l_reward` varchar(120) DEFAULT NULL COMMENT '低级宝箱奖励',
-  `luck_event_reward` varchar(120) DEFAULT NULL COMMENT '幸运事件奖励',
-  `treasure_event_reward` varchar(120) DEFAULT NULL COMMENT '宝藏事件奖励',
-  `luck_event_reward_addition` int(10) NOT NULL DEFAULT '0' COMMENT '幸运事件奖励加成',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `quest_grade` (`quest_grade`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COMMENT='冒险模式配置';
-
-CREATE TABLE `quest_map_plots` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `alias` varchar(20) NOT NULL DEFAULT '' COMMENT '特殊事件ID',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '事件名称',
-  `grade` int(10) NOT NULL COMMENT '触发世界等级',
-  `character_type` tinyint(2) NOT NULL COMMENT '触发角色限制',
-  `character_level` int(10) NOT NULL COMMENT '触发等级限制',
-  `point_id` int(11) NOT NULL COMMENT '触发点位',
-  `target_id` int(11) NOT NULL COMMENT '目标点位',
-  `content` text NOT NULL COMMENT '文字内容',
-  `monster` varchar(255) NOT NULL COMMENT '怪物配置',
-  `reward` varchar(255) NOT NULL COMMENT '奖励配置',
-  `parent_id` int(10) NOT NULL DEFAULT '0' COMMENT '父级事件ID(自增ID)',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='冒险委托剧情配置';
-
-CREATE TABLE `quest_map_plots_log` (
-   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-   `plot_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '剧情id',
-   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-   `finish_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '完成时间',
-   PRIMARY KEY (`id`),
-   UNIQUE KEY `uni` (`user_id`,`plot_id`) USING BTREE COMMENT '唯一索引'
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='冒险剧情记录';
-
-CREATE TABLE `quest_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `point_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '当前所处点位',
-  `quest_grade` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '世界等级',
-  `energy_value` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '体力值',
-  `energy_renew_time` int(11) NOT NULL DEFAULT '0' COMMENT '上次体力恢复时间戳',
-  `health_value` float(10,2) NOT NULL DEFAULT '1.00' COMMENT '生命值百分比',
-  `unlock_area` varchar(20) NOT NULL DEFAULT '' COMMENT '已解锁区域(逗号分隔)',
-  `death_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户死亡次数',
-  `random_event_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '触发随机事件次数',
-  `kill_monster_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '击杀恶灵次数',
-  `kill_reward_monster_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '击杀悬赏恶灵次数',
+  `location` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '挂件位置：1左手；2右手；3双手；4头部；5颈部；6身体；7：背部；8左手指；9右手指；10元魄；11宠物',
+  `equip_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '装备ID',
   `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户冒险模式数据';
+  PRIMARY KEY (`pendant_id`),
+  KEY `user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户挂件';
 
-CREATE TABLE `hard_user_pass` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `level` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '通关关卡 记录最高',
-  `team_user_id_1` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_2` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_3` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户深渊模式通关表';
-
-CREATE TABLE `hard_user_pass_log` (
-  `log_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `level_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '关卡ID',
-  `team_user_id_1` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_2` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `team_user_id_3` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '队员',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='困难模式通关日志';
-
-CREATE TABLE `hard_user_sweep_log` (
-  `log_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `level_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '关卡ID',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COMMENT='困难模式扫荡日志';
-
-CREATE TABLE `friend` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户id,邀请链接上的用户id',
-  `friend_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '好友id,接受邀请人id',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `delete_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='好友关系表';
-
-CREATE TABLE `friend_box_config` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `reward_total` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '宝箱物品数目',
-  `monster_level` tinyint(1) NOT NULL DEFAULT '0' COMMENT '宝箱怪物等级配置，此值加角色等级为宝箱怪等级',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='好友宝箱配置';
-
-CREATE TABLE `friend_box_log` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  `friend_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '好友id',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `date_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '偷取宝箱日期',
-  `is_skip` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否跳过',
-  `is_got` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已领取 0:否,1:是',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uni` (`user_id`,`friend_id`,`date_time`) USING BTREE COMMENT '用户id,好友id,日期 唯一'
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='好友宝箱偷取记录';
-
-CREATE TABLE `friend_box_record` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `box_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '宝箱id,friend_box_log表id',
-  `prop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '物品id common_prop表prop_id',
-  `quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '奖励的数量',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='好友系统物品奖励情况表';
-
-CREATE TABLE `friend_box_reward` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `prop_id` int(1) unsigned NOT NULL DEFAULT '1' COMMENT '物品id common_prop表prop_id',
-  `rate` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '概率,此列相加总数为10',
-  `quantity` float unsigned NOT NULL DEFAULT '1' COMMENT '奖励数量，角色等级的x倍',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uni` (`prop_id`) USING BTREE COMMENT '物品唯一索引'
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='好友宝箱奖励配置';
-
-CREATE TABLE `friend_invite_reward` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `prop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '物品',
-  `quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '数量',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='成功邀请好友奖励表';
-
-CREATE TABLE `task_daily` (
-  `task_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '任务ID',
-  `config_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '每日任务配置ID',
-  `date` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '日期:20210521',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`task_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='每日任务';
-
-CREATE TABLE `task_daily_complete_record` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  `task_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '任务ID',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='每日任务用户完成表';
-
-CREATE TABLE `task_daily_config` (
-  `config_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '类型，1-常驻任务;2-轮换任务',
-  `sub_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '小类:1观看广告;2在线时长(分);3加速收益;4抽卡次数;5分享次数;6登陆;7食用食物;8合成食物;9杀怪数量;10好友宝箱;11升级武器;12升级精灵;13深渊扫荡;14竞技场挑战;15冒险击杀恶灵',
-  `task_quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '任务目标数量',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`config_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='每日任务配置';
-
-CREATE TABLE `task_daily_config_reward` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `config_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '每日任务配置ID',
-  `prop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '奖励道具ID',
-  `quantity` varchar(64) NOT NULL DEFAULT '0' COMMENT '奖励道具数量',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='任务配置奖励';
-
-CREATE TABLE `activity` (
-  `activity_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `activity_name` varchar(32) NOT NULL DEFAULT '' COMMENT '活动名称',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0关闭；1启用',
-  `activity_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '活动类型：1=7天签到;2定时领钻石',
-  `banner` varchar(255) NOT NULL DEFAULT '' COMMENT 'banner地址',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `sort` tinyint(1) NOT NULL DEFAULT '0' COMMENT '排序：数字越小，越靠前',
-  PRIMARY KEY (`activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='活动';
-
-CREATE TABLE `activity_signin` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `activity_id` int(10) NOT NULL DEFAULT '0' COMMENT '活动ID',
-  `name` varchar(8) NOT NULL DEFAULT '' COMMENT '天',
-  `sort` tinyint(1) NOT NULL DEFAULT '0' COMMENT '排序：数字越小，越靠前',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='签到活动配置';
-
-CREATE TABLE `activity_signin_reward` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `signin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '签到id',
-  `prop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '奖励道具ID',
-  `quantity` varchar(64) NOT NULL DEFAULT '0' COMMENT '奖励道具数量',
-  `is_double` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否允许双倍',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='签到活动奖励配置';
-
-CREATE TABLE `activity_timer` (
-  `timer_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `activity_id` int(10) NOT NULL DEFAULT '0' COMMENT '活动ID',
-  `time` char(8) NOT NULL DEFAULT '' COMMENT '时:分:秒',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`timer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='定时活动配置';
-
-CREATE TABLE `activity_timer_reward` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `activity_id` int(10) NOT NULL DEFAULT '0' COMMENT '活动ID',
-  `timer_id` int(10) NOT NULL DEFAULT '0' COMMENT '定时配置ID',
-  `prop_id` int(10) NOT NULL DEFAULT '0' COMMENT '道具ID',
-  `quantity` varchar(64) NOT NULL DEFAULT '0' COMMENT '道具数量',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='定时活动奖励配置';
-
-CREATE TABLE `activity_user_reward_log` (
-  `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `activity_id` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '活动ID',
-  `config_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '配置ID:签到就是签到表配置ID',
-  `reward` varchar(1024) NOT NULL DEFAULT '' COMMENT '领取的奖励',
-  `is_double` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否双倍领取：0否；1是',
-  `date` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '日期',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='活动领取日志';
-
-CREATE TABLE `collect_reward` (
-  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `prop_id` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '奖励道具ID',
-  `quantity` varchar(64) NOT NULL DEFAULT '' COMMENT '奖励数量',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='收藏奖励配置';
-
-CREATE TABLE `collect_reward_log` (
-  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '领取奖励用户ID',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='收藏奖励领取记录';
-
-CREATE TABLE `exchange_code` (
-  `code_id` int(1) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `code_sn` varchar(32) NOT NULL DEFAULT '' COMMENT '兑换码',
-  `total_quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总可用次数',
-  `use_quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '已用次数',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`code_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='兑换码';
-
-CREATE TABLE `exchange_code_log` (
-  `log_id` int(1) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `code_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'exchange_code表主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='兑换码使用记录';
-
-CREATE TABLE `exchange_code_reward` (
-  `id` int(1) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `code_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'exchange_code表主键',
-  `prop_id` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '奖励道具ID',
-  `quantity` varchar(64) NOT NULL DEFAULT '' COMMENT '奖励数量',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='兑换码奖励';
-
-CREATE TABLE `quicken_log` (
-  `log_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `money` varchar(64) NOT NULL DEFAULT '0' COMMENT '金币',
-  `date` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '日期',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='加速获取金币记录';
-
-
-CREATE TABLE `quest_luck_event` (
-  `id` int(1) unsigned NOT NULL AUTO_INCREMENT,
-  `alias` varchar(8) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '别名',
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '事件类型 1-幸运事件 2-厄运事件',
-  `content` varchar(255) NOT NULL DEFAULT '' COMMENT '事件内容',
-  `quantity` tinyint(1) unsigned NOT NULL DEFAULT '10' COMMENT '概率',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='冒险随机事件';
-
-CREATE TABLE `quest_user_luck` (
- `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
- `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
- `random_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'quest_random_event表id',
- `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0-未使用，1-已使用',
- `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险用户随机事件奖励';
-
-CREATE TABLE `quest_user_event_log` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户类型',
-    `type` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '类型 1-打败boss,2-打败悬赏恶灵,3-打败普通恶灵,4-触发随机事件,5-用户死亡',
-    `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险用户事件记录';
-
-
+-- ----------------------------
+-- Records of user_pendant
+-- ----------------------------
