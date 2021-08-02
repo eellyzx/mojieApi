@@ -34,6 +34,7 @@ class MapController extends Base
                 'task_name' => '打开城堡大门',
             ],
             'map' => [
+                'map_id'   => $mapInfo->map_id,
                 'map_name' => $mapInfo->map_name,
                 'map_desc' => $mapInfo->map_desc,
                 'weather'  => '夏末的上午，太阳越升越高'
@@ -66,4 +67,26 @@ class MapController extends Base
         return $this->success($userInfo);
     }
 
+    /**
+     * 获取地图怪物列表
+     */
+    public function getMapMonsterList()
+    {
+        $mapId = $this->request->param('mapId');
+        $monsterId = $this->request->param('monsterId');
+        return $this->success([
+            ['monster_name' => '[精]冰猿','map_monster_id' => 1],
+            ['monster_name' => '[金]千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+        ]);
+    }
 }
