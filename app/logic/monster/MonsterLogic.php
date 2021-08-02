@@ -43,7 +43,7 @@ class MonsterLogic extends BaseLogic
     }
 
     /**
-     * 获取地图怪物
+     * 获取地图怪物分组
      * @param $mapId
      */
     public function getMapMonster($mapId)
@@ -51,6 +51,19 @@ class MonsterLogic extends BaseLogic
         $list = MapMonsterModel::getInstance()->where(['map_id' => $mapId,'status' => 1])->group('monster_id')
             ->field('monster_id,monster_name,count(map_monster_id) as monster_num')->select()->toArray();
 
+        return $list;
+    }
+
+    /**
+     * 获取怪物存活列表
+     * @param $mapId
+     * @param $monsterId
+     * @param $userId
+     */
+    public function getMapMonsterList($mapId,$monsterId,$userId)
+    {
+        $list = MapMonsterModel::getInstance()->where(['map_id' => $mapId,'monster_id' =>$monsterId,'status' => 1])
+            ->field('map_monster_id,monster_name,grade,type')->select()->toArray();
         return $list;
     }
 }

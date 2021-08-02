@@ -74,19 +74,34 @@ class MapController extends Base
     {
         $mapId = $this->request->param('mapId');
         $monsterId = $this->request->param('monsterId');
+
+        $list = MonsterLogic::getInstance()->getMapMonsterList($mapId,$monsterId,$this->userId);
+        return $this->success($list);
+    }
+
+    /**
+     * 获取怪物信息
+     */
+    public function getMonsterInfo()
+    {
+        $mapMonsterId = $this->request->param('mapMonsterId');
+        $mapId = $this->request->param('mapId');
+
         return $this->success([
-            ['monster_name' => '[精]冰猿','map_monster_id' => 1],
-            ['monster_name' => '[金]千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
-            ['monster_name' => '千年冰尸','map_monster_id' => 1],
+            'title'   => '燃烧之雪霜之逆风之闪电之 精英冰猿',
+            'grade'   => 190,
+            'desc'    => '生活在极冷的地狱雪原，全身雪白，嚎声凄悲。',
+            'status'  => '正常，看上去精力充沛。',
+            'pendant' => [
+                ['id' => 1,'location' => '左手','name' => '神话绮丽投枪+24冰+24电'],
+                ['id' => 2,'location' => '右手','name' => '神话绮丽之矛+24火+24风'],
+                ['id' => 4,'location' => '头部','name' => '神话绮丽角饰+24火+24风'],
+                ['id' => 5,'location' => '颈部','name' => '神话绮丽项链+24火+24风'],
+                ['id' => 6,'location' => '身体','name' => '神话绮丽铠甲+24火+24风'],
+                ['id' => 7,'location' => '背部','name' => '神话绮丽之翼+24火+24风'],
+                ['id' => 8,'location' => '手指','name' => '神话绮丽戒指+24火+24风'],
+                ['id' => 9,'location' => '手指','name' => '神话绮丽戒指+24火+24风'],
+            ],
         ]);
     }
 }
