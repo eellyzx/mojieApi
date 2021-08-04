@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50644
 File Encoding         : 65001
 
-Date: 2021-08-03 18:29:00
+Date: 2021-08-04 18:34:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -878,6 +878,28 @@ CREATE TABLE `monster_event` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for monster_prop
+-- ----------------------------
+DROP TABLE IF EXISTS `monster_prop`;
+CREATE TABLE `monster_prop` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `monster_id` int(10) NOT NULL DEFAULT '0' COMMENT '怪物主键',
+  `prop_id` int(10) NOT NULL DEFAULT '0' COMMENT '道具ID',
+  `is_mutex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '掉落互斥:0否；1是',
+  `probability` decimal(3,2) NOT NULL DEFAULT '0.00' COMMENT '掉落概率',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='怪物道具爆率配置';
+
+-- ----------------------------
+-- Records of monster_prop
+-- ----------------------------
+INSERT INTO `monster_prop` VALUES ('1', '1', '1', '1', '0.50', '0', '0');
+INSERT INTO `monster_prop` VALUES ('2', '1', '2', '1', '0.50', '0', '0');
+INSERT INTO `monster_prop` VALUES ('3', '1', '3', '1', '0.50', '0', '0');
+
+-- ----------------------------
 -- Table structure for npc
 -- ----------------------------
 DROP TABLE IF EXISTS `npc`;
@@ -890,6 +912,45 @@ CREATE TABLE `npc` (
 
 -- ----------------------------
 -- Records of npc
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for prop
+-- ----------------------------
+DROP TABLE IF EXISTS `prop`;
+CREATE TABLE `prop` (
+  `prop_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '道具ID',
+  `prop_name` varchar(16) NOT NULL DEFAULT '' COMMENT '道具名称',
+  `cate_id` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '道具分类：1材料；2宝石；3装备；4书籍；5药水；6其它',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`prop_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='道具表';
+
+-- ----------------------------
+-- Records of prop
+-- ----------------------------
+INSERT INTO `prop` VALUES ('1', '一级木材', '1', '0', '0');
+INSERT INTO `prop` VALUES ('2', '二级木材', '1', '0', '0');
+INSERT INTO `prop` VALUES ('3', '三级木材', '1', '0', '0');
+
+-- ----------------------------
+-- Table structure for prop_drop
+-- ----------------------------
+DROP TABLE IF EXISTS `prop_drop`;
+CREATE TABLE `prop_drop` (
+  `drop_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `prop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '道具ID',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '绑定用户ID',
+  `bind_end_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '绑定到期时间',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '物品状态:0未拾取;1已经拾取；2已过期',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`drop_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物品掉落表';
+
+-- ----------------------------
+-- Records of prop_drop
 -- ----------------------------
 
 -- ----------------------------
@@ -930,7 +991,7 @@ CREATE TABLE `sys_admin` (
 -- ----------------------------
 -- Records of sys_admin
 -- ----------------------------
-INSERT INTO `sys_admin` VALUES ('1', 'admin', '###8579b85cdd5bb959cb16d8cd2693efd7', '1', '1', '1563532079', '1627613524', '341', '192.168.9.238');
+INSERT INTO `sys_admin` VALUES ('1', 'admin', '###8579b85cdd5bb959cb16d8cd2693efd7', '1', '1', '1563532079', '1628065667', '342', '192.168.9.238');
 INSERT INTO `sys_admin` VALUES ('2', 'manage', '###12b7010f20f4a8912187563080d1f96b', '1', '2', '1563781092', '1618905372', '8', '113.67.73.157');
 
 -- ----------------------------
@@ -971,7 +1032,7 @@ CREATE TABLE `sys_menu_node` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `path` (`app`,`controller`,`action`) USING BTREE,
   KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='权限节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='权限节点表';
 
 -- ----------------------------
 -- Records of sys_menu_node
@@ -1002,6 +1063,8 @@ INSERT INTO `sys_menu_node` VALUES ('25', '修改排序', '10000', '2', '18', '0
 INSERT INTO `sys_menu_node` VALUES ('170', '地图管理', '10000', '0', '0', '1', 'admin', 'map', 'default', '', '', '');
 INSERT INTO `sys_menu_node` VALUES ('171', '地图列表', '10000', '1', '170', '1', 'admin', 'map', 'index', '', '', '');
 INSERT INTO `sys_menu_node` VALUES ('172', '怪物配置', '10000', '1', '170', '1', 'admin', 'map', 'monster', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('173', '怪物管理', '10000', '0', '0', '1', 'admin', 'monster', 'default', '', '', '');
+INSERT INTO `sys_menu_node` VALUES ('174', '怪物列表', '10000', '1', '173', '1', 'admin', 'monster', 'index', '', '', '');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -1151,7 +1214,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '1', 'ojNKd5QDBMWAXdws5VbzhapLviqY', '', '', '', '0', '0', '', '', '', '', '1627028196', '1627986495');
+INSERT INTO `user` VALUES ('1', '1', 'ojNKd5QDBMWAXdws5VbzhapLviqY', '', '', '', '0', '0', '', '', '', '', '1627028196', '1628062879');
 
 -- ----------------------------
 -- Table structure for user_game_data
@@ -1171,7 +1234,7 @@ CREATE TABLE `user_game_data` (
 -- ----------------------------
 -- Records of user_game_data
 -- ----------------------------
-INSERT INTO `user_game_data` VALUES ('1', '78', '0', '0', '0', '1627895820');
+INSERT INTO `user_game_data` VALUES ('1', '62', '0', '0', '0', '1628062979');
 
 -- ----------------------------
 -- Table structure for user_pendant
