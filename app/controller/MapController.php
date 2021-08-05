@@ -50,6 +50,16 @@ class MapController extends Base
                 'w' => ['name' => $mapList[$mapInfo->w] ?? '','map_id' => $mapInfo->w],
                 'e' => ['name' => $mapList[$mapInfo->e] ?? '','map_id' => $mapInfo->e],
             ],
+            'battle' => [
+                'battle_message' => '对极地战狂造成3392.86点伤害+42群体风暴',
+                'kill' => '极地战狂',
+                'drop' => [
+                    ['name' => '小瓶魔力药水','id' => 1],
+                    ['name' => '三级木材','id' => 2]
+                ],
+                'money' => '65',
+                'exp'   => '161'
+            ]
         ]);
     }
 
