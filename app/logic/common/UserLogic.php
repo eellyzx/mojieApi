@@ -28,7 +28,10 @@ class UserLogic extends BaseLogic
         $serverId      = $param['server_id'] ?? 1;// 分服ID
         $ip            = $request->ip();
         $now           = time();
-
+        $app = WechatLogic::getInstance()->getApp();
+        $a = $app->auth->session($code);
+        var_export($a);
+        exit();
         //转换渠道ID
         if(empty($code)){
             throw new LogicException('code不能为空');

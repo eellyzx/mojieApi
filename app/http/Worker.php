@@ -4,7 +4,10 @@
 namespace app\http;
 
 
+use app\logic\cache\tokenLogic;
 use app\model\monster\MapMonsterModel;
+use GatewayWorker\Lib\Gateway;
+use jwt\JwtAuth;
 use think\worker\Server;
 
 class Worker extends Server
@@ -23,6 +26,12 @@ class Worker extends Server
             ];
         }elseif ($type == 'battle'){
             $this->ack();
+        }elseif ($type == 'login'){
+            $token = $data['token'] ?? '';
+            $token = tokenLogic::getInstance()->tokenToString($token);
+            $result = JwtAuth::decode($token);
+            $userId = $result['user_id'];
+            Gateway::bindUid();
         }
 
         echo "收到消息>>>>>>>>>>>>\r\n";
@@ -30,6 +39,12 @@ class Worker extends Server
         echo "\r\n";
         echo "收到消息<<<<<<<<<<<<\r\n";
         $connection->send(json_encode($result));
+    }
+
+    public function onWorkerStart($worker)
+    {
+        $a = [0,1,2,3,4,5,6,7,8,9];
+        var_export(array_slice($a,2,8));
     }
 
     /**

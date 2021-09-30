@@ -10,6 +10,7 @@ namespace app\logic\common;
 
 use app\exception\LogicException;
 use app\logic\BaseLogic;
+use EasyWeChat\Factory;
 use tools\Curl;
 
 /**
@@ -24,7 +25,7 @@ class WechatLogic extends BaseLogic {
     private $code = '';
     private $apiUrl = 'https://api.weixin.qq.com/sns/jscode2session?';
 
-    public function __construct($appId, $secret, $code)
+    public function __construct($appId = '', $secret = '', $code = '')
     {
         $this->appId  = $appId;
         $this->secret = $secret;
@@ -69,7 +70,23 @@ class WechatLogic extends BaseLogic {
     }
 
 
+    public function getApp()
+    {
+        $config = [
+            'app_id' => 'wx0d6461d32f04ce2f',
+            'secret' => '32b24c46a89767c0541f3912f748ae5a',
+            // 下面为可选项
+            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+            'response_type' => 'array',
+            'log' => [
+                'level' => 'debug',
+                'file' => __DIR__.'/wechat.log',
+            ],
+        ];
 
+        $app = Factory::miniProgram($config);
+        return $app;
+    }
 
 }
 
